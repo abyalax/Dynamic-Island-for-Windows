@@ -1,0 +1,7 @@
+IndentWidth: 2
+TabWidth: 2
+UseTab: Never
+CommentPragmas: '^[ \t]+(@[a-zA-Z]+|WHAM@[0-9]+ )'
+ColumnLimit: 800 # be aware this settings can break description yaml for header windhawk
+ContinuationIndentWidth: 4
+BreakBeforeBraces: Attach

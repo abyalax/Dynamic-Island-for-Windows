@@ -7,3 +7,8 @@ desktop-live-overlay.wh.cpp
 
 # Local clang compile-check harness (scripts + build artifacts)
 .kiro-build/
+# WHAM
+/output/
+/.vscode/settings.json
+/.vscode/c_cpp_properties.json
+/.clangd

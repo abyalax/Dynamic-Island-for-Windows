@@ -32,8 +32,8 @@ A smooth, interactive overlay for your desktop, inspired by Apple's Dynamic Isla
 
 ### Dashboards
 
-| Media Player | Calendar | Weather | Game Overlay | Idle View |
-| :---: | :---: | :---: | :---: | :---: |
+|                                                                          Media Player                                                                           |                                                                            Calendar                                                                             |                                                                              Weather                                                                              |                                                                           Game Overlay                                                                            |                                                                           Idle View                                                                            |
+| :-------------------------------------------------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------------------------------------------------: |
 | <img src="https://raw.githubusercontent.com/devcode90/Dynamic-Island-for-Windows/9fdd6610ff4e48928ecde99362a87f1d43afefbe/previews/media-v2.png" width="200" /> | <img src="https://raw.githubusercontent.com/devcode90/Dynamic-Island-for-Windows/9fdd6610ff4e48928ecde99362a87f1d43afefbe/previews/calendar.png" width="200" /> | <img src="https://raw.githubusercontent.com/devcode90/Dynamic-Island-for-Windows/9fdd6610ff4e48928ecde99362a87f1d43afefbe/previews/weather-v2.png" width="200" /> | <img src="https://raw.githubusercontent.com/devcode90/Dynamic-Island-for-Windows/9fdd6610ff4e48928ecde99362a87f1d43afefbe/previews/gamebar-v2.png" width="200" /> | <img src="https://raw.githubusercontent.com/devcode90/Dynamic-Island-for-Windows/9fdd6610ff4e48928ecde99362a87f1d43afefbe/previews/idle-v2.png" width="200" /> |
 
 ### Hardware Monitor
@@ -50,8 +50,8 @@ A smooth, interactive overlay for your desktop, inspired by Apple's Dynamic Isla
 
 ### Privacy Indicators
 
-| Camera Detected | Microphone Detected |
-| :---: | :---: |
+|                                                                              Camera Detected                                                                              |                                                                          Microphone Detected                                                                           |
+| :-----------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
 | <img src="https://raw.githubusercontent.com/devcode90/Dynamic-Island-for-Windows/9fdd6610ff4e48928ecde99362a87f1d43afefbe/previews/camera-detected-v2.png" width="200" /> | <img src="https://raw.githubusercontent.com/devcode90/Dynamic-Island-for-Windows/9fdd6610ff4e48928ecde99362a87f1d43afefbe/previews/mic-detected-v2.png" width="200" /> |
 
 ---
