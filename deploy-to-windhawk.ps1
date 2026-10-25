@@ -114,7 +114,8 @@ try {
     Out-Null
 
     # Copy the source file
-    $destination = Join-Path $destinationDir $source.Name
+    $destinationName = "local@$($source.Name)"
+    $destination = Join-Path $destinationDir $destinationName
 
     Copy-Item -LiteralPath $source.FullName `
         -Destination $destination `
