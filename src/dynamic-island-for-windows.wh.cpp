@@ -3,8 +3,8 @@
 // @name            Dynamic Island for Windows
 // @description     A living, breathing pill overlay inspired by iPhone's Dynamic Island. Reacts to media, downloads, clipboard, battery, and more.
 // @version         1.4.0
-// @author          Himanshu
-// @github          https://github.com/devcode90
+// @author          Himanshu (Edited by Abya)
+// @github          https://github.com/abyalax
 // @include         windhawk.exe
 // @compilerOptions -lole32 -loleaut32 -lshcore -ld2d1 -ldwrite -ldwmapi -lgdi32 -luser32 -lshell32 -lruntimeobject -lwindowscodecs -lsetupapi -lwinhttp -lpdh -lwinmm
 // @license         MIT
@@ -13,13 +13,13 @@
 // ==WindhawkModReadme==
 /*
 # Dynamic Island for Windows
-
+https://github.com/abyalax/Dynamic-Island-for-Windows/
 A fluid, living overlay inspired by Apple's Dynamic Island, bringing a beautiful, highly-responsive UI to your Windows desktop. Built natively with hardware-accelerated Direct2D rendering for a
 buttery-smooth 60 FPS experience.
 
-![Dynamic Island running on the desktop](https://raw.githubusercontent.com/devcode90/Dynamic-Island-for-Windows/793cf954d51aa9748c39d544187fab6e25ecd0fb/previews/desktop.png)
+![Dynamic Island running on the desktop](https://raw.githubusercontent.com/abyalax/Dynamic-Island-for-Windows/793cf954d51aa9748c39d544187fab6e25ecd0fb/previews/desktop.png)
 
-![Dynamic Island surfaces](https://raw.githubusercontent.com/devcode90/Dynamic-Island-for-Windows/793cf954d51aa9748c39d544187fab6e25ecd0fb/previews/Full-preview-v2.png)
+![Dynamic Island surfaces](https://raw.githubusercontent.com/abyalax/Dynamic-Island-for-Windows/793cf954d51aa9748c39d544187fab6e25ecd0fb/previews/Full-preview-v2.png)
 
 ---
 
@@ -31,25 +31,25 @@ The Dynamic Island intelligently expands to display context-aware dashboards. Yo
 :--------------------------------------------------------------------------------------------------------- |
 :----------------------------------------------------------------------------------------------------------------------------------------------------------------- | | **Media Player**     | Shows live
 album art, track details, audio waveforms, and full playback controls.                          |
-![Media](https://raw.githubusercontent.com/devcode90/Dynamic-Island-for-Windows/793cf954d51aa9748c39d544187fab6e25ecd0fb/previews/media-v2.png)                    | | **Live Lyrics**      | Real-time
+![Media](https://raw.githubusercontent.com/abyalax/Dynamic-Island-for-Windows/793cf954d51aa9748c39d544187fab6e25ecd0fb/previews/media-v2.png)                    | | **Live Lyrics**      | Real-time
 synchronized lyrics with inline collapsed view and full lyrics tab.                              | ![Live
-Lyrics](https://raw.githubusercontent.com/devcode90/Dynamic-Island-for-Windows/main/previews/lyrics.png)                                                    | | **Blur & Acrylic**   | Genuine Windows
+Lyrics](https://raw.githubusercontent.com/abyalax/Dynamic-Island-for-Windows/main/previews/lyrics.png)                                                    | | **Blur & Acrylic**   | Genuine Windows
 DWM blur and acrylic backdrop effects for modern depth.                                    | ![Blur &
-Acrylic](https://raw.githubusercontent.com/devcode90/Dynamic-Island-for-Windows/main/previews/blur-acrylic.png)                                           | | **Calendar**         | A monthly grid that
+Acrylic](https://raw.githubusercontent.com/abyalax/Dynamic-Island-for-Windows/main/previews/blur-acrylic.png)                                           | | **Calendar**         | A monthly grid that
 always fits its rows, with today marked in the accent colour.                          |
-![Calendar](https://raw.githubusercontent.com/devcode90/Dynamic-Island-for-Windows/793cf954d51aa9748c39d544187fab6e25ecd0fb/previews/calendar.png)                 | | **Weather**          | Real-time
+![Calendar](https://raw.githubusercontent.com/abyalax/Dynamic-Island-for-Windows/793cf954d51aa9748c39d544187fab6e25ecd0fb/previews/calendar.png)                 | | **Weather**          | Real-time
 weather stats powered by wttr.in, including wind speed, humidity, and "feels like" temperature.  |
-![Weather](https://raw.githubusercontent.com/devcode90/Dynamic-Island-for-Windows/793cf954d51aa9748c39d544187fab6e25ecd0fb/previews/weather-v2.png)                | | **Hardware Monitor** | CPU, RAM,
+![Weather](https://raw.githubusercontent.com/abyalax/Dynamic-Island-for-Windows/793cf954d51aa9748c39d544187fab6e25ecd0fb/previews/weather-v2.png)                | | **Hardware Monitor** | CPU, RAM,
 GPU, disk and live network throughput, with load bars that turn amber past 75% and red past 90%. | ![Hardware
-Monitor](https://raw.githubusercontent.com/devcode90/Dynamic-Island-for-Windows/793cf954d51aa9748c39d544187fab6e25ecd0fb/previews/hardware-monitor.png) | | **Game Overlay**     | Real-time FPS, CPU,
+Monitor](https://raw.githubusercontent.com/abyalax/Dynamic-Island-for-Windows/793cf954d51aa9748c39d544187fab6e25ecd0fb/previews/hardware-monitor.png) | | **Game Overlay**     | Real-time FPS, CPU,
 GPU, RAM and disk, sized to whichever metrics you enable.                              |
-![Gamebar](https://raw.githubusercontent.com/devcode90/Dynamic-Island-for-Windows/793cf954d51aa9748c39d544187fab6e25ecd0fb/previews/gamebar-v2.png)                | | **Idle View**        | A minimal
+![Gamebar](https://raw.githubusercontent.com/abyalax/Dynamic-Island-for-Windows/793cf954d51aa9748c39d544187fab6e25ecd0fb/previews/gamebar-v2.png)                | | **Idle View**        | A minimal
 dashboard with your battery status, digital clock, and sleek pagination dots.                    |
-![Idle](https://raw.githubusercontent.com/devcode90/Dynamic-Island-for-Windows/793cf954d51aa9748c39d544187fab6e25ecd0fb/previews/idle-v2.png)                      | | **Camera Privacy**   | Shows a
+![Idle](https://raw.githubusercontent.com/abyalax/Dynamic-Island-for-Windows/793cf954d51aa9748c39d544187fab6e25ecd0fb/previews/idle-v2.png)                      | | **Camera Privacy**   | Shows a
 green dot when an app is actively using your webcam.                                               |
-![Camera](https://raw.githubusercontent.com/devcode90/Dynamic-Island-for-Windows/793cf954d51aa9748c39d544187fab6e25ecd0fb/previews/camera-detected-v2.png)         | | **Mic Privacy**      | Shows an
+![Camera](https://raw.githubusercontent.com/abyalax/Dynamic-Island-for-Windows/793cf954d51aa9748c39d544187fab6e25ecd0fb/previews/camera-detected-v2.png)         | | **Mic Privacy**      | Shows an
 orange dot when an app is actively using your microphone.                                         |
-![Mic](https://raw.githubusercontent.com/devcode90/Dynamic-Island-for-Windows/793cf954d51aa9748c39d544187fab6e25ecd0fb/previews/mic-detected-v2.png)               |
+![Mic](https://raw.githubusercontent.com/abyalax/Dynamic-Island-for-Windows/793cf954d51aa9748c39d544187fab6e25ecd0fb/previews/mic-detected-v2.png)               |
 
 ---
 
@@ -126,7 +126,7 @@ days). Songs without lyrics, and failed requests, are never saved, so they are s
 ## 📝 Feedback & Credits
 
 ### Feedback / Support / Bug Reports
-- Please use [Windhawk Mods Issues](https://github.com/ramensoftware/windhawk-mods/issues) or [dynamic-island-for-windows issues](https://github.com/devcode90/dynamic-island-for-windows/issues) to
+- Please use [Windhawk Mods Issues](https://github.com/ramensoftware/windhawk-mods/issues) or [dynamic-island-for-windows issues](https://github.com/abyalax/Dynamic-Island-for-Windows/issues) to
 report bugs, request features, or share feedback.
 - Clear descriptions, screenshots, or steps to reproduce help improve fixes and updates.
 - Suggestions for UI/UX or new integrations are always welcome.
@@ -849,7 +849,7 @@ constexpr int VisibleRowCapacity(float contentHeight) {
 // reading beside it).
 //
 // Fixes windhawk-mods#5086. Note the tracker: plain "#33"-style references in
-// this file are issues on devcode90/Dynamic-Island-for-Windows, whereas
+// this file are issues on abyalax/Dynamic-Island-for-Windows, whereas
 // "windhawk-mods#NNNN" is the ramensoftware/windhawk-mods tracker that the
 // published mod is submitted through. Both use bare #N in their own context, so
 // the upstream ones are always qualified here.
