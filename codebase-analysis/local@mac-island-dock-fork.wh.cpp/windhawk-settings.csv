@@ -1,0 +1,173 @@
+﻿setting,default,file,line
+taskbarMode,windows,src/local@mac-island-dock-fork.wh.cpp,1531
+dock,"""Dock: compact and floating, see-through, like on macOS""",src/local@mac-island-dock-fork.wh.cpp,1549
+windowsTransparent,"""Windows taskbar, transparent: only the apps, with a soft shadow, hiding itself""",src/local@mac-island-dock-fork.wh.cpp,1550
+windowsApps,"""Windows taskbar, only the apps (the island shows the rest)""",src/local@mac-island-dock-fork.wh.cpp,1551
+windows,"""Windows taskbar, unchanged (to use other taskbar mods)""",src/local@mac-island-dock-fork.wh.cpp,1552
+dock,"""Dock: compacta e flutuante, transparente, como no macOS""",src/local@mac-island-dock-fork.wh.cpp,1554
+windowsTransparent,"""Barra do Windows transparente: só os apps, com uma sombra suave, se escondendo sozinha""",src/local@mac-island-dock-fork.wh.cpp,1555
+windowsApps,"""Barra do Windows só com os apps (a ilha mostra o resto)""",src/local@mac-island-dock-fork.wh.cpp,1556
+windows,"""Barra do Windows sem mudanças (para usar outros mods de barra)""",src/local@mac-island-dock-fork.wh.cpp,1557
+dock,"""程序坞：紧凑、悬浮、半透明，像 macOS 一样""",src/local@mac-island-dock-fork.wh.cpp,1559
+windowsTransparent,"""Windows 任务栏，透明：只显示应用，带柔和阴影，会自动隐藏""",src/local@mac-island-dock-fork.wh.cpp,1560
+windowsApps,"""Windows 任务栏，只显示应用（其余由灵动岛显示）""",src/local@mac-island-dock-fork.wh.cpp,1561
+windows,"""Windows 任务栏，不做更改（可与其他任务栏 mod 一起使用）""",src/local@mac-island-dock-fork.wh.cpp,1562
+dock,"""Dock: kompakt und schwebend, durchsichtig, wie unter macOS""",src/local@mac-island-dock-fork.wh.cpp,1564
+windowsTransparent,"""Windows-Taskleiste, transparent: nur die Apps, mit weichem Schatten, blendet sich selbst aus""",src/local@mac-island-dock-fork.wh.cpp,1565
+windowsApps,"""Windows-Taskleiste, nur die Apps (die Insel zeigt den Rest)""",src/local@mac-island-dock-fork.wh.cpp,1566
+windows,"""Windows-Taskleiste, unverändert (für die Nutzung anderer Taskleisten-Mods)""",src/local@mac-island-dock-fork.wh.cpp,1567
+dock,"""Dock: compacto y flotante, transparente, como en macOS""",src/local@mac-island-dock-fork.wh.cpp,1569
+windowsTransparent,"""Barra de tareas de Windows, transparente: solo las apps, con una sombra suave, se oculta sola""",src/local@mac-island-dock-fork.wh.cpp,1570
+windowsApps,"""Barra de tareas de Windows, solo las apps (la isla muestra el resto)""",src/local@mac-island-dock-fork.wh.cpp,1571
+windows,"""Barra de tareas de Windows, sin cambios (para usar otros mods de la barra de tareas)""",src/local@mac-island-dock-fork.wh.cpp,1572
+dock,"""Док: компактный и плавающий, прозрачный, как в macOS""",src/local@mac-island-dock-fork.wh.cpp,1574
+windowsTransparent,"""Панель задач Windows, прозрачная: только приложения, с мягкой тенью, скрывается сама""",src/local@mac-island-dock-fork.wh.cpp,1575
+windowsApps,"""Панель задач Windows, только приложения (остальное показывает остров)""",src/local@mac-island-dock-fork.wh.cpp,1576
+windows,"""Панель задач Windows, без изменений (для других модов панели задач)""",src/local@mac-island-dock-fork.wh.cpp,1577
+dock,"""Dock: コンパクトで浮かぶ透明なバー（macOS のように）""",src/local@mac-island-dock-fork.wh.cpp,1579
+windowsTransparent,"""Windows タスクバー、透明: アプリのみ、やわらかい影付きで自動的に隠れる""",src/local@mac-island-dock-fork.wh.cpp,1580
+windowsApps,"""Windows タスクバー、アプリのみ（その他はアイランドが表示）""",src/local@mac-island-dock-fork.wh.cpp,1581
+windows,"""Windows タスクバー、変更なし（他のタスクバー Mod 用）""",src/local@mac-island-dock-fork.wh.cpp,1582
+dock,"""Dock: nhỏ gọn, nổi và trong suốt giống macOS""",src/local@mac-island-dock-fork.wh.cpp,1584
+windowsTransparent,"""Taskbar Windows trong suốt: chỉ hiện icon ứng dụng, có đổ bóng nhẹ và tự ẩn""",src/local@mac-island-dock-fork.wh.cpp,1585
+windowsApps,"""Taskbar Windows chỉ hiện ứng dụng (đồng hồ và khay hệ thống chuyển lên đảo)""",src/local@mac-island-dock-fork.wh.cpp,1586
+windows,"""Taskbar Windows mặc định, giữ nguyên (để dùng chung với các mod taskbar khác)""",src/local@mac-island-dock-fork.wh.cpp,1587
+windowsHideTray,false,src/local@mac-island-dock-fork.wh.cpp,1588
+showIsland,true,src/local@mac-island-dock-fork.wh.cpp,1605
+calendarIcs,"[""""]",src/local@mac-island-dock-fork.wh.cpp,1622
+hiding,,src/local@mac-island-dock-fork.wh.cpp,1639
+autoHide,false,src/local@mac-island-dock-fork.wh.cpp,1640
+hideWhen,mouseAway,src/local@mac-island-dock-fork.wh.cpp,1657
+mouseAway,Mouse away,src/local@mac-island-dock-fork.wh.cpp,1675
+maximized,Window maximized,src/local@mac-island-dock-fork.wh.cpp,1676
+windowOver,Window over it,src/local@mac-island-dock-fork.wh.cpp,1677
+mouseAway,Mouse longe,src/local@mac-island-dock-fork.wh.cpp,1679
+maximized,Janela maximizada,src/local@mac-island-dock-fork.wh.cpp,1680
+windowOver,Janela por cima,src/local@mac-island-dock-fork.wh.cpp,1681
+mouseAway,鼠标离开,src/local@mac-island-dock-fork.wh.cpp,1683
+maximized,窗口最大化,src/local@mac-island-dock-fork.wh.cpp,1684
+windowOver,窗口挡住它,src/local@mac-island-dock-fork.wh.cpp,1685
+mouseAway,Maus weg,src/local@mac-island-dock-fork.wh.cpp,1687
+maximized,Fenster maximiert,src/local@mac-island-dock-fork.wh.cpp,1688
+windowOver,Fenster darüber,src/local@mac-island-dock-fork.wh.cpp,1689
+mouseAway,Ratón lejos,src/local@mac-island-dock-fork.wh.cpp,1691
+maximized,Ventana maximizada,src/local@mac-island-dock-fork.wh.cpp,1692
+windowOver,Ventana encima,src/local@mac-island-dock-fork.wh.cpp,1693
+mouseAway,Мышь далеко,src/local@mac-island-dock-fork.wh.cpp,1695
+maximized,Окно развёрнуто,src/local@mac-island-dock-fork.wh.cpp,1696
+windowOver,Окно над ней,src/local@mac-island-dock-fork.wh.cpp,1697
+mouseAway,マウスが離れたとき,src/local@mac-island-dock-fork.wh.cpp,1699
+maximized,ウィンドウの最大化,src/local@mac-island-dock-fork.wh.cpp,1700
+windowOver,ウィンドウが重なったとき,src/local@mac-island-dock-fork.wh.cpp,1701
+mouseAway,Chuột rời đi,src/local@mac-island-dock-fork.wh.cpp,1703
+maximized,Cửa sổ phóng to,src/local@mac-island-dock-fork.wh.cpp,1704
+windowOver,Cửa sổ đè lên,src/local@mac-island-dock-fork.wh.cpp,1705
+showDelay,0,src/local@mac-island-dock-fork.wh.cpp,1706
+revealHeight,0,src/local@mac-island-dock-fork.wh.cpp,1723
+hideDelay,400,src/local@mac-island-dock-fork.wh.cpp,1740
+showDuration,260,src/local@mac-island-dock-fork.wh.cpp,1757
+hideDuration,220,src/local@mac-island-dock-fork.wh.cpp,1774
+fullscreenGuard,true,src/local@mac-island-dock-fork.wh.cpp,1791
+icons,,src/local@mac-island-dock-fork.wh.cpp,1824
+magnification,170,src/local@mac-island-dock-fork.wh.cpp,1825
+magnificationRange,150,src/local@mac-island-dock-fork.wh.cpp,1842
+onlyApps,false,src/local@mac-island-dock-fork.wh.cpp,1859
+bounceOnLaunch,true,src/local@mac-island-dock-fork.wh.cpp,1876
+keepOpenOnLaunch,true,src/local@mac-island-dock-fork.wh.cpp,1893
+keepOpenDuration,1500,src/local@mac-island-dock-fork.wh.cpp,1910
+dock,,src/local@mac-island-dock-fork.wh.cpp,1943
+iconSize,32,src/local@mac-island-dock-fork.wh.cpp,1944
+iconGap,8,src/local@mac-island-dock-fork.wh.cpp,1961
+bottomGap,2,src/local@mac-island-dock-fork.wh.cpp,1978
+cornerRadius,22,src/local@mac-island-dock-fork.wh.cpp,1995
+maxWidth,0,src/local@mac-island-dock-fork.wh.cpp,2012
+background,true,src/local@mac-island-dock-fork.wh.cpp,2029
+backgroundOpacity,50,src/local@mac-island-dock-fork.wh.cpp,2046
+dotIndicator,true,src/local@mac-island-dock-fork.wh.cpp,2063
+attentionMode,icon,src/local@mac-island-dock-fork.wh.cpp,2080
+icon,"Only the app's icon peeks out, bouncing",src/local@mac-island-dock-fork.wh.cpp,2098
+dock,The whole dock shows up,src/local@mac-island-dock-fork.wh.cpp,2099
+none,Nothing,src/local@mac-island-dock-fork.wh.cpp,2100
+icon,"Só o ícone do app aparece, pulando",src/local@mac-island-dock-fork.wh.cpp,2102
+dock,A dock inteira aparece,src/local@mac-island-dock-fork.wh.cpp,2103
+none,Nada,src/local@mac-island-dock-fork.wh.cpp,2104
+icon,只有应用图标探出并跳动,src/local@mac-island-dock-fork.wh.cpp,2106
+dock,整个程序坞显示出来,src/local@mac-island-dock-fork.wh.cpp,2107
+none,什么都不做,src/local@mac-island-dock-fork.wh.cpp,2108
+icon,Nur das App-Symbol schaut hüpfend hervor,src/local@mac-island-dock-fork.wh.cpp,2110
+dock,Das ganze Dock erscheint,src/local@mac-island-dock-fork.wh.cpp,2111
+none,Nichts,src/local@mac-island-dock-fork.wh.cpp,2112
+icon,"Solo asoma el icono de la app, rebotando",src/local@mac-island-dock-fork.wh.cpp,2114
+dock,Aparece todo el dock,src/local@mac-island-dock-fork.wh.cpp,2115
+none,Nada,src/local@mac-island-dock-fork.wh.cpp,2116
+icon,"Выглядывает только значок приложения, подпрыгивая",src/local@mac-island-dock-fork.wh.cpp,2118
+dock,Появляется весь док,src/local@mac-island-dock-fork.wh.cpp,2119
+none,Ничего,src/local@mac-island-dock-fork.wh.cpp,2120
+icon,アプリのアイコンだけがバウンスしながらのぞく,src/local@mac-island-dock-fork.wh.cpp,2122
+dock,Dock 全体が表示される,src/local@mac-island-dock-fork.wh.cpp,2123
+none,何もしない,src/local@mac-island-dock-fork.wh.cpp,2124
+icon,Chỉ nhô riêng icon của ứng dụng đó lên và nảy nhẹ,src/local@mac-island-dock-fork.wh.cpp,2126
+dock,Trượt cả thanh Dock lên,src/local@mac-island-dock-fork.wh.cpp,2127
+none,Không làm gì,src/local@mac-island-dock-fork.wh.cpp,2128
+hideTray,false,src/local@mac-island-dock-fork.wh.cpp,2129
+animations,,src/local@mac-island-dock-fork.wh.cpp,2162
+enabled,true,src/local@mac-island-dock-fork.wh.cpp,2163
+level,all,src/local@mac-island-dock-fork.wh.cpp,2180
+all,All,src/local@mac-island-dock-fork.wh.cpp,2198
+partial,"""Partial: no bounces, glows, color blends, counting numbers nor scrolling text""",src/local@mac-island-dock-fork.wh.cpp,2199
+none,None,src/local@mac-island-dock-fork.wh.cpp,2200
+all,Todas,src/local@mac-island-dock-fork.wh.cpp,2202
+partial,"""Parciais: sem quiques, brilhos, mistura de cores, números contando nem texto rolando""",src/local@mac-island-dock-fork.wh.cpp,2203
+none,Nenhuma,src/local@mac-island-dock-fork.wh.cpp,2204
+all,全部,src/local@mac-island-dock-fork.wh.cpp,2206
+partial,"""部分：没有弹跳、发光、颜色渐变、数字滚动和文字滚动""",src/local@mac-island-dock-fork.wh.cpp,2207
+none,无,src/local@mac-island-dock-fork.wh.cpp,2208
+all,Alle,src/local@mac-island-dock-fork.wh.cpp,2210
+partial,"""Teilweise: kein Hüpfen, Leuchten, Farbübergänge, Zählzahlen oder Lauftext""",src/local@mac-island-dock-fork.wh.cpp,2211
+none,Keine,src/local@mac-island-dock-fork.wh.cpp,2212
+all,Todas,src/local@mac-island-dock-fork.wh.cpp,2214
+partial,"""Parcial: sin rebotes, brillos, mezclas de color, números que cuentan ni texto que se desplaza""",src/local@mac-island-dock-fork.wh.cpp,2215
+none,Ninguna,src/local@mac-island-dock-fork.wh.cpp,2216
+all,Все,src/local@mac-island-dock-fork.wh.cpp,2218
+partial,"""Частично: без подпрыгиваний, свечения, смешения цветов, счёта чисел и прокрутки текста""",src/local@mac-island-dock-fork.wh.cpp,2219
+none,Нет,src/local@mac-island-dock-fork.wh.cpp,2220
+all,すべて,src/local@mac-island-dock-fork.wh.cpp,2222
+partial,"""一部: バウンス、グロー、色のブレンド、数字のカウント、テキストのスクロールなし""",src/local@mac-island-dock-fork.wh.cpp,2223
+none,なし,src/local@mac-island-dock-fork.wh.cpp,2224
+all,Đầy đủ,src/local@mac-island-dock-fork.wh.cpp,2226
+partial,"""Cơ bản: tắt hiệu ứng nảy, phát sáng, chuyển màu, nhảy số và chạy chữ""",src/local@mac-island-dock-fork.wh.cpp,2227
+none,Tắt hết,src/local@mac-island-dock-fork.wh.cpp,2228
+speed,125,src/local@mac-island-dock-fork.wh.cpp,2229
+frameRate,screen,src/local@mac-island-dock-fork.wh.cpp,2246
+screen,The screen's rate,src/local@mac-island-dock-fork.wh.cpp,2264
+fps90,About 90 a second,src/local@mac-island-dock-fork.wh.cpp,2265
+fps60,About 60 a second,src/local@mac-island-dock-fork.wh.cpp,2266
+fps30,About 30 a second,src/local@mac-island-dock-fork.wh.cpp,2267
+screen,A taxa da tela,src/local@mac-island-dock-fork.wh.cpp,2269
+fps90,Cerca de 90 por segundo,src/local@mac-island-dock-fork.wh.cpp,2270
+fps60,Cerca de 60 por segundo,src/local@mac-island-dock-fork.wh.cpp,2271
+fps30,Cerca de 30 por segundo,src/local@mac-island-dock-fork.wh.cpp,2272
+screen,屏幕刷新率,src/local@mac-island-dock-fork.wh.cpp,2274
+fps90,约每秒 90 帧,src/local@mac-island-dock-fork.wh.cpp,2275
+fps60,约每秒 60 帧,src/local@mac-island-dock-fork.wh.cpp,2276
+fps30,约每秒 30 帧,src/local@mac-island-dock-fork.wh.cpp,2277
+screen,Die Rate des Bildschirms,src/local@mac-island-dock-fork.wh.cpp,2279
+fps90,Etwa 90 pro Sekunde,src/local@mac-island-dock-fork.wh.cpp,2280
+fps60,Etwa 60 pro Sekunde,src/local@mac-island-dock-fork.wh.cpp,2281
+fps30,Etwa 30 pro Sekunde,src/local@mac-island-dock-fork.wh.cpp,2282
+screen,La tasa de la pantalla,src/local@mac-island-dock-fork.wh.cpp,2284
+fps90,Unos 90 por segundo,src/local@mac-island-dock-fork.wh.cpp,2285
+fps60,Unos 60 por segundo,src/local@mac-island-dock-fork.wh.cpp,2286
+fps30,Unos 30 por segundo,src/local@mac-island-dock-fork.wh.cpp,2287
+screen,Частота экрана,src/local@mac-island-dock-fork.wh.cpp,2289
+fps90,Около 90 в секунду,src/local@mac-island-dock-fork.wh.cpp,2290
+fps60,Около 60 в секунду,src/local@mac-island-dock-fork.wh.cpp,2291
+fps30,Около 30 в секунду,src/local@mac-island-dock-fork.wh.cpp,2292
+screen,画面のリフレッシュ レート,src/local@mac-island-dock-fork.wh.cpp,2294
+fps90,約 90 フレーム/秒,src/local@mac-island-dock-fork.wh.cpp,2295
+fps60,約 60 フレーム/秒,src/local@mac-island-dock-fork.wh.cpp,2296
+fps30,約 30 フレーム/秒,src/local@mac-island-dock-fork.wh.cpp,2297
+screen,Theo tần số quét màn hình,src/local@mac-island-dock-fork.wh.cpp,2299
+fps90,Khoảng 90 FPS,src/local@mac-island-dock-fork.wh.cpp,2300
+fps60,Khoảng 60 FPS,src/local@mac-island-dock-fork.wh.cpp,2301
+fps30,Khoảng 30 FPS,src/local@mac-island-dock-fork.wh.cpp,2302

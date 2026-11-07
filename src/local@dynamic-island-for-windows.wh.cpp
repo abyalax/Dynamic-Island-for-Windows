@@ -3132,9 +3132,6 @@ void LoadSettings() {
 
   const int localNotchStyle = Wh_GetIntValue(L"NotchStyleOverride", -1);
   next.notchStyle = localNotchStyle >= 0 ? (localNotchStyle != 0) : baseNotch;
-  // TEMPORARY TEST: force notch style to verify the new geometry path.
-  // Remove this line after testing and configure the shape in Windhawk.
-  next.notchStyle = true;
 
   // A bottom-anchored island cannot be a top-edge macOS notch.
   if (IsBottomPosition(next.position)) {
