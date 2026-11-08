@@ -12,3 +12,5 @@ desktop-live-overlay.wh.cpp
 /.vscode/settings.json
 /.vscode/c_cpp_properties.json
 /.clangd
+*.patch
+

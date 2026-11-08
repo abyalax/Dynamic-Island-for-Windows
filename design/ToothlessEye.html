@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -34,10 +35,10 @@
         .notch-container {
             background-color: #05070a;
             box-shadow: 0 12px 35px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.08), 0 0 20px rgba(16, 185, 129, 0.15);
-            transition: width 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), 
-                        height 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), 
-                        border-radius 0.4s ease,
-                        box-shadow 0.3s ease;
+            transition: width 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
+                height 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
+                border-radius 0.4s ease,
+                box-shadow 0.3s ease;
         }
 
         .notch-container.notif-active {
@@ -46,8 +47,15 @@
 
         /* Iris Pulse & Glint Motion */
         @keyframes glintShift {
-            0%, 100% { transform: translate(0, 0); }
-            50% { transform: translate(0.8px, -0.8px); }
+
+            0%,
+            100% {
+                transform: translate(0, 0);
+            }
+
+            50% {
+                transform: translate(0.8px, -0.8px);
+            }
         }
 
         .glint-animated {
@@ -56,9 +64,19 @@
 
         /* Bubbly Animated Notification Mode for Eyes */
         @keyframes toothlessExcited {
-            0%, 100% { transform: translateY(0) scale(1) rotate(0deg); }
-            25% { transform: translateY(-4px) scale(1.15, 0.9) rotate(-3deg); }
-            75% { transform: translateY(-2px) scale(0.95, 1.05) rotate(3deg); }
+
+            0%,
+            100% {
+                transform: translateY(0) scale(1) rotate(0deg);
+            }
+
+            25% {
+                transform: translateY(-4px) scale(1.15, 0.9) rotate(-3deg);
+            }
+
+            75% {
+                transform: translateY(-2px) scale(0.95, 1.05) rotate(3deg);
+            }
         }
 
         .bubbly-eyes {
@@ -72,8 +90,15 @@
         }
 
         @keyframes floatBubble {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-4px); }
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-4px);
+            }
         }
 
         .speech-bubble::after {
@@ -95,10 +120,12 @@
         }
     </style>
 </head>
+
 <body class="desktop-bg min-h-screen text-slate-100 flex flex-col justify-between select-none">
 
     <!-- macOS Menu Bar -->
-    <header class="mac-menubar fixed top-0 left-0 right-0 h-8 flex items-center justify-between px-4 z-40 text-xs text-slate-300 font-medium">
+    <header
+        class="mac-menubar fixed top-0 left-0 right-0 h-8 flex items-center justify-between px-4 z-40 text-xs text-slate-300 font-medium">
         <div class="flex items-center space-x-4">
             <i data-lucide="apple" class="w-4 h-4 text-white hover:opacity-80 cursor-pointer"></i>
             <span class="font-bold text-white">Finder</span>
@@ -110,7 +137,9 @@
         </div>
 
         <div class="flex items-center space-x-3 text-slate-400">
-            <span class="text-[10px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2 py-0.5 rounded-full font-semibold">TOOTHLESS MODE</span>
+            <span
+                class="text-[10px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2 py-0.5 rounded-full font-semibold">TOOTHLESS
+                MODE</span>
             <i data-lucide="wifi" class="w-3.5 h-3.5 hover:text-white cursor-pointer"></i>
             <i data-lucide="battery-charging" class="w-4 h-4 hover:text-white cursor-pointer"></i>
             <i data-lucide="search" class="w-3.5 h-3.5 hover:text-white cursor-pointer"></i>
@@ -121,63 +150,76 @@
     <!-- TOP CENTER NOTCH / DYNAMIC ISLAND CONTAINER -->
     <div class="fixed top-0 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center">
         <!-- Detection Visual Overlay Ring (Toggleable) -->
-        <div id="detectionRing" class="radius-indicator absolute rounded-full top-0 -translate-y-1/2 opacity-0 transition-opacity"></div>
+        <div id="detectionRing"
+            class="radius-indicator absolute rounded-full top-0 -translate-y-1/2 opacity-0 transition-opacity"></div>
 
         <!-- SPEECH BUBBLE (Notif State) -->
-        <div id="speechBubble" class="speech-bubble absolute top-14 bg-slate-900 text-emerald-300 border border-emerald-500/40 px-3.5 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap opacity-0 pointer-events-none transition-all duration-300 transform scale-95 z-50 flex items-center space-x-1.5">
+        <div id="speechBubble"
+            class="speech-bubble absolute top-14 bg-slate-900 text-emerald-300 border border-emerald-500/40 px-3.5 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap opacity-0 pointer-events-none transition-all duration-300 transform scale-95 z-50 flex items-center space-x-1.5">
             <span>Hey! Quick look!</span>
             <span class="text-sm">🐉✨</span>
         </div>
 
         <!-- MAIN DYNAMIC ISLAND NOTCH -->
-        <div id="notch" class="notch-container relative mt-0 rounded-b-2xl h-8 w-44 flex items-center justify-between px-3 cursor-pointer overflow-hidden group">
-            
+        <div id="notch"
+            class="notch-container relative mt-0 rounded-b-2xl h-8 w-44 flex items-center justify-between px-3 cursor-pointer overflow-hidden group">
+
             <!-- LEFT CONTENT (EXPANDED NOTIF ONLY) -->
             <div id="notifIcon" class="hidden items-center space-x-2 text-emerald-400">
-                <div class="w-8 h-8 rounded-full bg-emerald-500/20 flex items-center justify-center border border-emerald-500/40 shadow-sm shadow-emerald-500/30">
+                <div
+                    class="w-8 h-8 rounded-full bg-emerald-500/20 flex items-center justify-center border border-emerald-500/40 shadow-sm shadow-emerald-500/30">
                     <i data-lucide="flame" class="w-4.5 h-4.5 text-emerald-400 animate-pulse"></i>
                 </div>
             </div>
 
             <!-- CENTER/EYE SECTION (CONFIGURABLE DRAGON EYES) -->
             <div id="eyeWrapper" class="flex items-center justify-center space-x-1 mx-auto transition-all duration-300">
-                <svg width="0" height="0" class="absolute" aria-hidden="true"><defs>
-                    <radialGradient id="toothlessIrisGrad" cx="50%" cy="40%" r="60%" fx="35%" fy="25%">
-                        <stop id="gradStop0" offset="0%" stop-color="#b5ff36" />
-                        <stop id="gradStop1" offset="45%" stop-color="#10b981" />
-                        <stop id="gradStop2" offset="85%" stop-color="#047857" />
-                        <stop id="gradStop3" offset="100%" stop-color="#022c22" />
-                    </radialGradient>
-                    <filter id="irisGlow" x="-20%" y="-20%" width="140%" height="140%">
-                        <feGaussianBlur stdDeviation="1" result="blur" />
-                        <feComposite in="SourceGraphic" in2="blur" operator="over" />
-                    </filter>
-                </defs></svg>
+                <svg width="0" height="0" class="absolute" aria-hidden="true">
+                    <defs>
+                        <radialGradient id="toothlessIrisGrad" cx="50%" cy="40%" r="60%" fx="35%" fy="25%">
+                            <stop id="gradStop0" offset="0%" stop-color="#b5ff36" />
+                            <stop id="gradStop1" offset="45%" stop-color="#10b981" />
+                            <stop id="gradStop2" offset="85%" stop-color="#047857" />
+                            <stop id="gradStop3" offset="100%" stop-color="#022c22" />
+                        </radialGradient>
+                        <filter id="irisGlow" x="-20%" y="-20%" width="140%" height="140%">
+                            <feGaussianBlur stdDeviation="1" result="blur" />
+                            <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                        </filter>
+                    </defs>
+                </svg>
                 <!-- Requested default geometry: rx=16, ry=22 -->
                 <svg id="leftEye" class="w-7 h-10 overflow-visible" viewBox="0 0 50 50">
                     <ellipse class="eye-socket" cx="25" cy="25" rx="16" ry="22" fill="#020617" />
-                    <ellipse class="eye-iris" id="leftIris" cx="25" cy="25" rx="16" ry="22" fill="url(#toothlessIrisGrad)" filter="url(#irisGlow)" />
+                    <ellipse class="eye-iris" id="leftIris" cx="25" cy="25" rx="16" ry="22"
+                        fill="url(#toothlessIrisGrad)" filter="url(#irisGlow)" />
                     <g id="leftPupilGroup">
                         <ellipse id="leftPupil" cx="25" cy="25" rx="3.5" ry="14" fill="#020617" />
                         <circle class="glint-animated" cx="20" cy="17" r="3.5" fill="#ffffff" opacity="0.95" />
                         <circle class="glint-animated" cx="28" cy="30" r="1.8" fill="#ffffff" opacity="0.75" />
                     </g>
-                    <ellipse class="blink-overlay" id="leftBlinkOverlay" cx="25" cy="25" rx="16" ry="22" fill="#05070a" opacity="0" style="transform-box:fill-box;transform-origin:center top;transform:scaleY(0.001)" />
+                    <ellipse class="blink-overlay" id="leftBlinkOverlay" cx="25" cy="25" rx="16" ry="22" fill="#05070a"
+                        opacity="0"
+                        style="transform-box:fill-box;transform-origin:center top;transform:scaleY(0.001)" />
                 </svg>
                 <svg id="rightEye" class="w-7 h-10 overflow-visible" viewBox="0 0 50 50">
                     <ellipse class="eye-socket" cx="25" cy="25" rx="16" ry="22" fill="#020617" />
-                    <ellipse class="eye-iris" id="rightIris" cx="25" cy="25" rx="16" ry="22" fill="url(#toothlessIrisGrad)" filter="url(#irisGlow)" />
+                    <ellipse class="eye-iris" id="rightIris" cx="25" cy="25" rx="16" ry="22"
+                        fill="url(#toothlessIrisGrad)" filter="url(#irisGlow)" />
                     <g id="rightPupilGroup">
                         <ellipse id="rightPupil" cx="25" cy="25" rx="3.5" ry="14" fill="#020617" />
                         <circle class="glint-animated" cx="20" cy="17" r="3.5" fill="#ffffff" opacity="0.95" />
                         <circle class="glint-animated" cx="28" cy="30" r="1.8" fill="#ffffff" opacity="0.75" />
                     </g>
-                    <ellipse class="blink-overlay" id="rightBlinkOverlay" cx="25" cy="25" rx="16" ry="22" fill="#05070a" opacity="0" style="transform-box:fill-box;transform-origin:center top;transform:scaleY(0.001)" />
+                    <ellipse class="blink-overlay" id="rightBlinkOverlay" cx="25" cy="25" rx="16" ry="22" fill="#05070a"
+                        opacity="0"
+                        style="transform-box:fill-box;transform-origin:center top;transform:scaleY(0.001)" />
                 </svg>
             </div>
 
             <!-- RIGHT CONTENT (NOTIF METADATA & DISMISS BUTTON) -->
-            <div id="notifDetails" class="hidden flex-1 pl-3 pr-1 justify-between items-center opacity-0 transition-opacity duration-300">
+            <div id="notifDetails"
+                class="hidden flex-1 pl-3 pr-1 justify-between items-center opacity-0 transition-opacity duration-300">
                 <div class="flex flex-col text-left leading-tight">
                     <span class="text-xs font-bold text-white flex items-center space-x-1">
                         <span>Toothless Alert</span>
@@ -185,7 +227,8 @@
                     </span>
                     <span class="text-[10px] text-emerald-300/80">Dragon companion spotted dynamic cursor</span>
                 </div>
-                <button id="dismissBtn" class="ml-2 p-1 hover:bg-slate-800/80 rounded-full text-slate-400 hover:text-emerald-300 transition-colors">
+                <button id="dismissBtn"
+                    class="ml-2 p-1 hover:bg-slate-800/80 rounded-full text-slate-400 hover:text-emerald-300 transition-colors">
                     <i data-lucide="x" class="w-3.5 h-3.5"></i>
                 </button>
             </div>
@@ -195,25 +238,31 @@
     <!-- MAIN INTERACTIVE DEMO CANVAS / CONTROL PANEL -->
     <main class="container mx-auto px-4 pt-24 pb-12 flex-1 flex flex-col items-center justify-center">
         <!-- Interactive Tip Card -->
-        <div class="max-w-xl w-full bg-slate-900/80 backdrop-blur-md border border-slate-800 rounded-2xl p-6 shadow-2xl text-center space-y-6">
-            <div class="inline-flex items-center space-x-2 px-3 py-1 bg-emerald-500/10 border border-emerald-500/30 rounded-full text-emerald-300 text-xs font-semibold">
+        <div
+            class="max-w-xl w-full bg-slate-900/80 backdrop-blur-md border border-slate-800 rounded-2xl p-6 shadow-2xl text-center space-y-6">
+            <div
+                class="inline-flex items-center space-x-2 px-3 py-1 bg-emerald-500/10 border border-emerald-500/30 rounded-full text-emerald-300 text-xs font-semibold">
                 <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
                 <span>Toothless Dragon Edition</span>
             </div>
 
             <h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-white">Toothless Dynamic Island</h1>
             <p class="text-slate-400 text-sm leading-relaxed">
-                Watch Toothless's eyes react dynamically! Move your cursor nearby to see pupil constriction & smooth head tracking. Click the notch for a playful squint blink or trigger notifications to see excited wide pupil dilation.
+                Watch Toothless's eyes react dynamically! Move your cursor nearby to see pupil constriction & smooth
+                head tracking. Click the notch for a playful squint blink or trigger notifications to see excited wide
+                pupil dilation.
             </p>
 
             <!-- CONTROLS & TRIGGERS -->
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-                <button id="btnNotif" class="flex items-center justify-center space-x-2 py-2.5 px-4 bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-slate-950 font-bold rounded-xl text-sm transition-all shadow-lg shadow-emerald-600/30">
+                <button id="btnNotif"
+                    class="flex items-center justify-center space-x-2 py-2.5 px-4 bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-slate-950 font-bold rounded-xl text-sm transition-all shadow-lg shadow-emerald-600/30">
                     <i data-lucide="bell-ring" class="w-4 h-4"></i>
                     <span>Trigger Notification</span>
                 </button>
 
-                <button id="btnBlink" class="flex items-center justify-center space-x-2 py-2.5 px-4 bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-200 font-medium rounded-xl text-sm border border-slate-700 transition-all">
+                <button id="btnBlink"
+                    class="flex items-center justify-center space-x-2 py-2.5 px-4 bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-200 font-medium rounded-xl text-sm border border-slate-700 transition-all">
                     <i data-lucide="smile" class="w-4 h-4 text-emerald-400"></i>
                     <span>Playful Toothless Blink</span>
                 </button>
@@ -222,16 +271,23 @@
             <!-- EYE APPEARANCE SETTINGS -->
             <div class="pt-4 border-t border-slate-800/80 grid grid-cols-1 sm:grid-cols-2 gap-3 text-left">
                 <label class="text-xs text-slate-400">Eye color theme
-                    <select id="eyeThemeSelect" class="mt-1 w-full rounded-lg bg-slate-800 border border-slate-700 px-3 py-2 text-sm text-slate-100">
-                        <option value="toothless">Toothless Emerald</option><option value="ocean">Ocean Blue</option>
-                        <option value="sunset">Sunset Amber</option><option value="violet">Mystic Violet</option>
-                        <option value="crimson">Crimson</option><option value="ice">Arctic Ice</option>
+                    <select id="eyeThemeSelect"
+                        class="mt-1 w-full rounded-lg bg-slate-800 border border-slate-700 px-3 py-2 text-sm text-slate-100">
+                        <option value="toothless">Toothless Emerald</option>
+                        <option value="ocean">Ocean Blue</option>
+                        <option value="sunset">Sunset Amber</option>
+                        <option value="violet">Mystic Violet</option>
+                        <option value="crimson">Crimson</option>
+                        <option value="ice">Arctic Ice</option>
                     </select>
                 </label>
                 <label class="text-xs text-slate-400">Eye shape
-                    <select id="eyeShapeSelect" class="mt-1 w-full rounded-lg bg-slate-800 border border-slate-700 px-3 py-2 text-sm text-slate-100">
-                        <option value="toothless">Toothless (16 × 22)</option><option value="round">Round (20 × 20)</option>
-                        <option value="wide">Wide oval (22 × 14)</option><option value="almond">Almond (23 × 12)</option>
+                    <select id="eyeShapeSelect"
+                        class="mt-1 w-full rounded-lg bg-slate-800 border border-slate-700 px-3 py-2 text-sm text-slate-100">
+                        <option value="toothless">Toothless (16 × 22)</option>
+                        <option value="round">Round (20 × 20)</option>
+                        <option value="wide">Wide oval (22 × 14)</option>
+                        <option value="almond">Almond (23 × 12)</option>
                     </select>
                 </label>
             </div>
@@ -242,11 +298,14 @@
                     <span>Dragon Perception Radius (<span id="radiusVal">280</span>px)</span>
                     <label class="inline-flex items-center cursor-pointer">
                         <input type="checkbox" id="toggleRing" class="sr-only peer">
-                        <div class="w-7 h-4 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-emerald-500 relative"></div>
+                        <div
+                            class="w-7 h-4 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-emerald-500 relative">
+                        </div>
                         <span class="ml-2 text-xs text-slate-400">Show Bounds</span>
                     </label>
                 </div>
-                <input type="range" id="radiusInput" min="120" max="500" value="280" class="w-full accent-emerald-500 bg-slate-800 h-1.5 rounded-lg appearance-none cursor-pointer">
+                <input type="range" id="radiusInput" min="120" max="500" value="280"
+                    class="w-full accent-emerald-500 bg-slate-800 h-1.5 rounded-lg appearance-none cursor-pointer">
             </div>
         </div>
     </main>
@@ -256,7 +315,7 @@
         macOS Notch Toothless Eye Animation • Vivid SVG Shader Gradients & Vector Eyelid Curves
     </footer>
 
-  <!-- INTERACTION LOGIC & PHYSICS SCRIPT -->
+    <!-- INTERACTION LOGIC & PHYSICS SCRIPT -->
     <script>
         // Initialize Lucide Icons
         lucide.createIcons();
@@ -317,19 +376,19 @@
 
         // Add new themes/shapes here; the selectors are populated in the HTML above.
         const EYE_THEMES = {
-            toothless: { stops: ['#b5ff36','#10b981','#047857','#022c22'], socket:'#020617', pupil:'#020617', blink:'#05070a', glow:'#10b981' },
-            ocean:     { stops: ['#d8fbff','#38bdf8','#0369a1','#082f49'], socket:'#020617', pupil:'#020617', blink:'#061827', glow:'#38bdf8' },
-            sunset:    { stops: ['#fff1a8','#f59e0b','#c2410c','#431407'], socket:'#1c1008', pupil:'#160b05', blink:'#160b05', glow:'#f59e0b' },
-            violet:    { stops: ['#f5d0fe','#c084fc','#7e22ce','#2e1065'], socket:'#10051d', pupil:'#090313', blink:'#090313', glow:'#c084fc' },
-            crimson:   { stops: ['#fecaca','#ef4444','#991b1b','#450a0a'], socket:'#180606', pupil:'#100303', blink:'#100303', glow:'#ef4444' },
-            ice:       { stops: ['#ffffff','#a5f3fc','#0891b2','#164e63'], socket:'#03151b', pupil:'#020b10', blink:'#020b10', glow:'#67e8f9' }
+            toothless: { stops: ['#b5ff36', '#10b981', '#047857', '#022c22'], socket: '#020617', pupil: '#020617', blink: '#05070a', glow: '#10b981' },
+            ocean: { stops: ['#d8fbff', '#38bdf8', '#0369a1', '#082f49'], socket: '#020617', pupil: '#020617', blink: '#061827', glow: '#38bdf8' },
+            sunset: { stops: ['#fff1a8', '#f59e0b', '#c2410c', '#431407'], socket: '#1c1008', pupil: '#160b05', blink: '#160b05', glow: '#f59e0b' },
+            violet: { stops: ['#f5d0fe', '#c084fc', '#7e22ce', '#2e1065'], socket: '#10051d', pupil: '#090313', blink: '#090313', glow: '#c084fc' },
+            crimson: { stops: ['#fecaca', '#ef4444', '#991b1b', '#450a0a'], socket: '#180606', pupil: '#100303', blink: '#100303', glow: '#ef4444' },
+            ice: { stops: ['#ffffff', '#a5f3fc', '#0891b2', '#164e63'], socket: '#03151b', pupil: '#020b10', blink: '#020b10', glow: '#67e8f9' }
         };
         const EYE_SHAPES = {
-            toothless: { rx:16, ry:22 },
-            round:     { rx:20, ry:20 },
-            wide:      { rx:22, ry:14 },
-            almond:    { rx:23, ry:12 },
-            softTriangle: { rx:22, ry:19, softTriangle:true }
+            toothless: { rx: 16, ry: 22 },
+            round: { rx: 20, ry: 20 },
+            wide: { rx: 22, ry: 14 },
+            almond: { rx: 23, ry: 12 },
+            softTriangle: { rx: 22, ry: 19, softTriangle: true }
         };
         let activeTheme = EYE_THEMES.toothless;
         let activeShape = EYE_SHAPES.toothless;
@@ -389,10 +448,10 @@
 
         function applyEyeTheme(name) {
             activeTheme = EYE_THEMES[name] || EYE_THEMES.toothless;
-            ['gradStop0','gradStop1','gradStop2','gradStop3'].forEach((id,i) => document.getElementById(id).setAttribute('stop-color', activeTheme.stops[i]));
+            ['gradStop0', 'gradStop1', 'gradStop2', 'gradStop3'].forEach((id, i) => document.getElementById(id).setAttribute('stop-color', activeTheme.stops[i]));
             document.querySelectorAll('.eye-socket').forEach(el => el.setAttribute('fill', activeTheme.socket));
-            [leftPupil,rightPupil].forEach(el => el.setAttribute('fill', activeTheme.pupil));
-            [leftBlinkOverlay,rightBlinkOverlay].forEach(el => el.setAttribute('fill', activeTheme.blink));
+            [leftPupil, rightPupil].forEach(el => el.setAttribute('fill', activeTheme.pupil));
+            [leftBlinkOverlay, rightBlinkOverlay].forEach(el => el.setAttribute('fill', activeTheme.blink));
             notch.style.boxShadow = `0 12px 35px rgba(0,0,0,.8), 0 0 0 1px rgba(255,255,255,.08), 0 0 20px ${activeTheme.glow}33`;
             speechBubble.style.color = activeTheme.stops[0];
             speechBubble.style.borderColor = activeTheme.glow + '88';
@@ -745,10 +804,11 @@
         }
 
         // Start Loop
-        window.onload = function() {
+        window.onload = function () {
             animatePupils();
         };
     </script>
-    
+
 </body>
+
 </html>

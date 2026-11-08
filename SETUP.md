@@ -1,4 +1,4 @@
-## Local Development, Build, and Testing
+## Local Development, Build, and Testing for local@dynamic-island-for-windows.wh.cpp
 
 This section describes how to set up the local development environment, compile the Dynamic Island for Windows Windhawk mod, and test it on a local Windows machine without relying on the Windhawk VS Code extension.
 
@@ -49,7 +49,7 @@ The tested environment uses Clang 20.1.3 with the Windhawk-provided MinGW-w64 to
 
 ### 2. Check the Source Before Building
 
-Run a syntax-only check before producing a DLL:
+Run a syntax-only check before producin
 
 ```powershell
 & $compiler `
@@ -210,3 +210,29 @@ All Output Analyzed place on `/codebase-analysis`
 - Run the syntax check before each build when making significant changes.
 - Back up working source and settings before testing experimental changes.
 - Prefer Windhawk's own mod-loading and reload mechanisms over manually replacing files used by a running instance.
+
+## Local Development, Build, and Testing for local@mac-island-dock-fork.wh
+
+```powershell
+& $compiler `
+    --target=x86_64-w64-mingw32 `
+    -std=c++23 `
+    -shared `
+    -DUNICODE -D_UNICODE `
+    -DWINVER=0x0A00 -D_WIN32_WINNT=0x0A00 -D_WIN32_IE=0x0A00 `
+    -DNTDDI_VERSION=0x0A000008 `
+    -D__USE_MINGW_ANSI_STDIO=0 `
+    -DWH_MOD -DWH_EDITING `
+    -DWIN32_LEAN_AND_MEAN `
+    -I $include `
+    -include winsock2.h `
+    -include windhawk_api.h `
+    "src\local@mac-island-dock-fork.wh.cpp" `
+    -L $engine `
+    -lwindhawk `
+    -lole32 -loleaut32 -lruntimeobject -lshell32 -ldwmapi -lcomctl32 `
+    -lgdi32 -lmsimg32 -ld2d1 -ldwrite -lwlanapi -luuid -lversion `
+    -lbthprops -ldxva2 -lshlwapi -lwinhttp -lwinmm -liphlpapi -lshcore `
+    -lcomdlg32 -limm32 -lsetupapi -lcfgmgr32 -luserenv `
+    -o "$out\local@mac-island-dock-fork.dll"
+```

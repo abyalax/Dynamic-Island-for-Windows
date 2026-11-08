@@ -2759,6 +2759,12 @@ struct {
     // The shelf: files dropped on the pill kept there (their paths) to be
     // dragged out later into another app (see ShelfPanel).
     bool islandShelf;
+    // The dragon's eyes on the pill: they follow the mouse, blink and glance
+    // around on their own (see Island::StepEyes), in the colors of an index of
+    // kEyeThemes and the shape of an index of kEyeShapes.
+    bool islandEyes;
+    int islandEyeTheme;
+    int islandEyeShape;
     // While a timer, Pomodoro or the stopwatch runs, the minimized line is a
     // small pill with the ring and the time of the one ending first (with
     // islandHideClock, the time beside the clock; see TimerLineWanted).
@@ -14535,6 +14541,8 @@ enum class IslandItem {
     Commands,
     // The shelf's files (its icon and how many, see ShelfPanel).
     Shelf,
+    // The dragon's eyes (see kEyesFont and Island::StepEyes).
+    Eyes,
 };
 
 bool IsPrivacyItem(IslandItem item) {
@@ -14584,6 +14592,7 @@ bool HasItemTip(IslandItem item) {
         case IslandItem::AiUsage:
         case IslandItem::Commands:
         case IslandItem::Shelf:
+        case IslandItem::Eyes:
             return true;
         default:
             return IsPrivacyItem(item);
@@ -14643,6 +14652,8 @@ constexpr int kVisualizerFont = 25;
 // the app's ID or the file: an AI agent's app, see Island::AiAgentApp; a
 // pinned command's, see UserCommand::iconPath).
 constexpr int kAppIconFont = 27;
+// The dragon's eyes (see EyesState): drawn by DrawEyes.
+constexpr int kEyesFont = 28;
 constexpr float kItemNameMaxWidth = 140;
 
 constexpr GUID kCLSID_MMDeviceEnumerator = {
@@ -25465,6 +25476,451 @@ constexpr float kVizSilentPeak = 0.001f;
 constexpr size_t kVizBars = 6;
 constexpr float kVizShape[kVizBars] = {0.55f, 0.8f, 1.0f, 0.95f, 0.75f, 0.5f};
 constexpr float kVizSpeeds[kVizBars] = {4.3f, 5.9f, 3.7f, 6.4f, 4.9f, 5.3f};
+// The dragon's eyes (islandEyes): two eyes on the pill that follow the mouse
+// when it's near, blink, glance around on their own and get excited with a
+// new notification. They're drawn in the units of a 50 x 50 box (the design's,
+// design/ToothlessEye.html): an eye's shape in them (kEyeShapes), its pupil
+// and look (EyesState), all scaled to the pill when drawn (see DrawEyes).
+//
+// They cost nothing while they rest: a timer (kEyesTimerId) only asks every
+// kEyesWatchMs whether the mouse came near or something is due (a blink, a
+// glance), and frames run only while something moves, and then at most
+// 1 / kEyesFrameSeconds times a second (see Island::StepEyes and
+// Island::OnEyesTimer). Not at all while the pill isn't seen, or with the
+// animations off (the eyes stay open, looking ahead; see
+// Island::UpdateEyesTimer).
+constexpr UINT_PTR kEyesTimerId = 62;
+constexpr UINT kEyesWatchMs = 80;
+constexpr double kEyesFrameSeconds = 1.0 / 30;
+// How far from the middle of the eyes the mouse is seen, in pixels at 100%.
+constexpr float kEyesRadius = 280;
+// How long a new notification keeps them excited, and how long the pupils
+// stay as they were once what held them is over.
+constexpr double kEyesExcitedSeconds = 1.6;
+constexpr double kEyesRelaxSeconds = 2.0;
+// How far a pupil goes from the middle, at most, in the units.
+constexpr double kEyesMaxLook = 9;
+// A pupil at rest (its width and height, in the units).
+constexpr double kEyePupilWidth = 3.5;
+constexpr double kEyePupilHeight = 14;
+// An eye's unit as a part of the pill's height.
+constexpr float kEyesUnitOfHeight = 0.0141f;
+
+struct EyeTheme {
+    // The iris, from its bright middle to its edge (0xRRGGBB).
+    int stops[4];
+    int socket;
+    int pupil;
+    int lid;
+};
+
+// (kChoiceEyeTheme's options, in this order.)
+constexpr EyeTheme kEyeThemes[] = {
+    {{0xB5FF36, 0x10B981, 0x047857, 0x022C22}, 0x020617, 0x020617, 0x05070A},
+    {{0xD8FBFF, 0x38BDF8, 0x0369A1, 0x082F49}, 0x020617, 0x020617, 0x061827},
+    {{0xFFF1A8, 0xF59E0B, 0xC2410C, 0x431407}, 0x1C1008, 0x160B05, 0x160B05},
+    {{0xF5D0FE, 0xC084FC, 0x7E22CE, 0x2E1065}, 0x10051D, 0x090313, 0x090313},
+    {{0xFECACA, 0xEF4444, 0x991B1B, 0x450A0A}, 0x180606, 0x100303, 0x100303},
+    {{0xFFFFFF, 0xA5F3FC, 0x0891B2, 0x164E63}, 0x03151B, 0x020B10, 0x020B10},
+};
+
+struct EyeShape {
+    // The eye's half width and half height, in the units.
+    float rx;
+    float ry;
+    // A soft triangle, not an ellipse.
+    bool triangle;
+};
+
+// (kChoiceEyeShape's options, in this order.)
+constexpr EyeShape kEyeShapes[] = {
+    {16, 22, false},
+    {20, 20, false},
+    {22, 14, false},
+    {23, 12, false},
+    {22, 19, true},
+};
+
+const EyeTheme& ChosenEyeTheme() {
+    return kEyeThemes[std::clamp(g_settings.islandEyeTheme, 0,
+                                 (int)std::size(kEyeThemes) - 1)];
+}
+
+const EyeShape& ChosenEyeShape() {
+    return kEyeShapes[std::clamp(g_settings.islandEyeShape, 0,
+                                 (int)std::size(kEyeShapes) - 1)];
+}
+
+// The eyes' room across the pill (the two eyes and the gap between them).
+float EyesWidth(const EyeShape& shape, float height) {
+    return std::round((4 * shape.rx + 10) * height * kEyesUnitOfHeight);
+}
+
+// What an eye's unit is in pixels in their room (what fits, across and
+// along it: the pill upright has them the other way round).
+float EyesUnit(const D2D1_RECT_F& rect, const EyeShape& shape) {
+    const float width = rect.right - rect.left;
+    const float height = rect.bottom - rect.top;
+    return std::min(width / (4 * shape.rx + 10),
+                    std::min(width, height) * kEyesUnitOfHeight);
+}
+
+// What the eyes see in a step.
+struct EyesView {
+    // The mouse is within the radius.
+    bool nearby = false;
+    // How far it is from the middle of the eyes (in pixels at 100%), and how
+    // close of the radius (0 at its edge, 1 on them).
+    double distance = 0;
+    double closeness = 0;
+    // From each eye to the mouse, in pixels.
+    double dx[2]{};
+    double dy[2]{};
+    // A notification came now.
+    bool excite = false;
+};
+
+// The eyes' state: where each pupil looks, how wide and tall they are, the
+// lid of a blink, the wobble of excitement, and when the next blink and
+// glance are due. All of it moves with SpringTowards, so the animations'
+// level and speed apply (see Step).
+struct EyesState {
+    double pupilX[2]{};
+    double pupilY[2]{};
+    double velocityX[2]{};
+    double velocityY[2]{};
+    double width = kEyePupilWidth;
+    double widthVelocity = 0;
+    double height = kEyePupilHeight;
+    double heightVelocity = 0;
+    double targetWidth = kEyePupilWidth;
+    double targetHeight = kEyePupilHeight;
+    // How closed the lid is: 0 open, 1 closed.
+    double lid = 0;
+    // The wobble's strength (see Wobble).
+    double bounce = 0;
+    double bounceVelocity = 0;
+    bool blinking = false;
+    double blinkTime = 0;
+    double blinkAt = 0;
+    double glanceAt = 0;
+    // A glance going on: until when, where to, and how much less the other
+    // eye goes.
+    double glanceUntil = 0;
+    double glanceX = 0;
+    double glanceY = 0;
+    double glanceSkew = 1;
+    // When the pupils go back to rest, once what held them is over.
+    double relaxAt = 0;
+    double excitedFrom = 0;
+    double excitedUntil = 0;
+    bool wasExcited = false;
+    bool wasNear = false;
+    // The blink and glance times planned (they are at the first step).
+    bool planned = false;
+    uint64_t seed = 0x9E3779B97F4A7C15ull;
+
+    // Back to rest, the plans forgotten (the eyes shown again start anew).
+    void Reset() {
+        const uint64_t kept = seed;
+        *this = EyesState();
+        seed = kept;
+    }
+
+    double Random() {
+        seed ^= seed >> 12;
+        seed ^= seed << 25;
+        seed ^= seed >> 27;
+        return (double)((seed * 0x2545F4914F6CDD1Dull) >> 11) /
+               9007199254740992.0;
+    }
+
+    void Plan(double now) {
+        seed ^= (uint64_t)(now * 1000000.0) | 1;
+        blinkAt = now + 1.8 + Random() * 3.5;
+        glanceAt = now + 3.0 + Random() * 4.0;
+        planned = true;
+    }
+
+    bool WasNear() const { return wasNear; }
+
+    // Whether a step has something to do (a blink, a glance, the pupils
+    // going back to rest), so the watch timer wakes the frames for it.
+    bool Due(double now) const {
+        return !planned || now >= blinkAt || now >= glanceAt ||
+               (relaxAt > 0 && now >= relaxAt) ||
+               (glanceUntil > 0 && now >= glanceUntil) ||
+               (wasExcited && now >= excitedUntil);
+    }
+
+    // A blink now (a click on them).
+    void Blink() {
+        if (!blinking && AnimationLevel() < 2) {
+            blinking = true;
+            blinkTime = 0;
+        }
+    }
+
+    // The lid in a blink's time: two blinks, each closing, holding and
+    // opening (the second a little quicker). -1 once it's over.
+    static double BlinkLid(double t) {
+        struct Stage {
+            double close;
+            double hold;
+            double open;
+        };
+        constexpr Stage first{0.08, 0.05, 0.12};
+        constexpr Stage second{0.07, 0.05, 0.10};
+        constexpr double gap = 0.17;
+        auto one = [](const Stage& stage, double u) {
+            if (u < stage.close) {
+                return EaseInOutCubic(u / stage.close);
+            }
+            u -= stage.close;
+            if (u < stage.hold) {
+                return 1.0;
+            }
+            u -= stage.hold;
+            if (u < stage.open) {
+                const double rest = 1 - u / stage.open;
+                return rest * rest * rest;
+            }
+            return -1.0;
+        };
+        const double firstEnd = first.close + first.hold + first.open;
+        if (t < firstEnd) {
+            return one(first, t);
+        }
+        t -= firstEnd;
+        if (t < gap) {
+            return 0;
+        }
+        return one(second, t - gap);
+    }
+
+    void StartGlance(double now, const EyeShape& shape) {
+        const double angle = Random() * 6.283185307179586;
+        const double reach = std::min(
+            kEyesMaxLook, 0.6 * std::min<double>(shape.rx, shape.ry));
+        const double span = std::min(reach, 4.5 + Random() * 3.5);
+        glanceX = std::cos(angle) * span;
+        glanceY = std::sin(angle) * span * 0.8;
+        glanceSkew = 0.94 + Random() * 0.12;
+        glanceUntil = now + 0.9 + Random() * 0.8;
+        targetWidth = 8;
+        targetHeight = 12;
+        relaxAt = 0;
+    }
+
+    // A spring's tail takes long to die out, far past what shows (an eighth
+    // of a unit, see Signature): close enough and slow enough, it's there.
+    static bool Settled(bool moving,
+                        double& value,
+                        double& velocity,
+                        double target) {
+        if (moving && std::fabs(target - value) < 0.05 &&
+            std::fabs(velocity) < 0.5) {
+            value = target;
+            velocity = 0;
+            return false;
+        }
+        return moving;
+    }
+
+    // One step of `dt` seconds (already the animations' speed) at `now`.
+    // Returns true while something moves: the frames go on until it
+    // doesn't (and the watch timer wakes them for what comes next).
+    bool Step(double now, double dt, const EyesView& view,
+              const EyeShape& shape) {
+        const int level = AnimationLevel();
+        const bool still = level >= 2;
+        if (!planned) {
+            Plan(now);
+        }
+        bool excited = false;
+        if (still) {
+            // (Open, looking ahead.)
+            blinking = false;
+            glanceUntil = 0;
+            relaxAt = 0;
+            excitedUntil = 0;
+            wasExcited = false;
+            wasNear = false;
+            targetWidth = kEyePupilWidth;
+            targetHeight = kEyePupilHeight;
+        } else {
+            if (view.excite) {
+                excitedFrom = now;
+                excitedUntil = now + kEyesExcitedSeconds;
+                glanceUntil = 0;
+                relaxAt = 0;
+            }
+            excited = now < excitedUntil;
+            if (excited) {
+                wasExcited = true;
+                targetWidth = 12;
+                targetHeight = 16;
+            } else if (wasExcited) {
+                wasExcited = false;
+                targetWidth = kEyePupilWidth;
+                targetHeight = kEyePupilHeight;
+            }
+            if (view.nearby && !excited) {
+                // Looking at the mouse: the closer, the wider the pupils.
+                wasNear = true;
+                relaxAt = 0;
+                glanceUntil = 0;
+                targetWidth = kEyePupilWidth + view.closeness * 4.5;
+                targetHeight = kEyePupilHeight - view.closeness * 2;
+            } else if (wasNear) {
+                wasNear = false;
+                relaxAt = now + kEyesRelaxSeconds;
+            }
+            if (glanceUntil > 0 && now >= glanceUntil) {
+                glanceUntil = 0;
+                relaxAt = now + kEyesRelaxSeconds;
+            }
+            if (relaxAt > 0 && now >= relaxAt) {
+                relaxAt = 0;
+                if (!excited && !view.nearby && glanceUntil == 0) {
+                    targetWidth = kEyePupilWidth;
+                    targetHeight = kEyePupilHeight;
+                }
+            }
+            // A glance now and then, on its own, if nothing holds the eyes.
+            if (now >= glanceAt) {
+                glanceAt = now + 5.5 + Random() * 5.5;
+                if (!excited && !view.nearby && glanceUntil == 0 &&
+                    Random() < 0.78) {
+                    StartGlance(now, shape);
+                }
+            }
+            if (!blinking && now >= blinkAt) {
+                blinkAt = now + 1.8 + Random() * 3.5;
+                if (!excited) {
+                    blinking = true;
+                    blinkTime = 0;
+                }
+            }
+        }
+
+        // Where each pupil goes.
+        double goX[2]{};
+        double goY[2]{};
+        if (!still && !excited) {
+            if (view.nearby) {
+                const double reach =
+                    std::min(view.distance / 16.0,
+                             std::min(kEyesMaxLook,
+                                      0.6 * std::min<double>(shape.rx,
+                                                             shape.ry)));
+                for (int e = 0; e < 2; e++) {
+                    const double length = std::hypot(view.dx[e], view.dy[e]);
+                    if (length > 0.001) {
+                        goX[e] = view.dx[e] / length * reach;
+                        goY[e] = view.dy[e] / length * reach;
+                    }
+                }
+            } else if (glanceUntil > 0) {
+                goX[0] = glanceX;
+                goY[0] = glanceY;
+                goX[1] = glanceX * glanceSkew;
+                goY[1] = glanceY * glanceSkew;
+            }
+        }
+        bool moving = false;
+        for (int e = 0; e < 2; e++) {
+            if (Settled(SpringTowards(pupilX[e], velocityX[e], goX[e], 0.25, dt),
+                        pupilX[e], velocityX[e], goX[e])) {
+                moving = true;
+            }
+            if (Settled(SpringTowards(pupilY[e], velocityY[e], goY[e], 0.25, dt),
+                        pupilY[e], velocityY[e], goY[e])) {
+                moving = true;
+            }
+        }
+        if (Settled(SpringTowards(width, widthVelocity, targetWidth, 0.3, dt),
+                    width, widthVelocity, targetWidth)) {
+            moving = true;
+        }
+        if (Settled(SpringTowards(height, heightVelocity, targetHeight, 0.3, dt),
+                    height, heightVelocity, targetHeight)) {
+            moving = true;
+        }
+
+        // The blink.
+        if (blinking) {
+            blinkTime += dt;
+            lid = BlinkLid(blinkTime);
+            if (lid < 0) {
+                lid = 0;
+                blinking = false;
+            } else {
+                moving = true;
+            }
+        } else {
+            lid = 0;
+        }
+
+        // The wobble of excitement: a decoration, so not from the "partial"
+        // level on (the eyes only open their pupils wide).
+        const bool bubbly = excited && level == 0;
+        if (Settled(SpringTowards(bounce, bounceVelocity, bubbly ? 1 : 0, 0.2,
+                                  dt),
+                    bounce, bounceVelocity, bubbly ? 1 : 0)) {
+            moving = true;
+        }
+        if (bubbly) {
+            moving = true;
+        }
+        return moving;
+    }
+
+    // The wobble at `now`: how much the eyes lift (in the units) and widen
+    // and flatten (1: not).
+    void Wobble(double now, float* lift, float* wide, float* tall) const {
+        *lift = 0;
+        *wide = 1;
+        *tall = 1;
+        if (bounce <= 0.001) {
+            return;
+        }
+        static constexpr double kLift[] = {0, -6, 0, -3, 0};
+        static constexpr double kWide[] = {1, 1.15, 1, 0.95, 1};
+        static constexpr double kTall[] = {1, 0.9, 1, 1.05, 1};
+        const double phase =
+            std::fmod(std::max(0.0, now - excitedFrom), 0.35) / 0.35;
+        const int part = std::min(3, (int)(phase * 4));
+        const double t = phase * 4 - part;
+        const double ease = t * t * (3 - 2 * t);
+        *lift = (float)(bounce * (kLift[part] +
+                                  (kLift[part + 1] - kLift[part]) * ease));
+        *wide = (float)(1 + bounce * (kWide[part] - 1 +
+                                      (kWide[part + 1] - kWide[part]) * ease));
+        *tall = (float)(1 + bounce * (kTall[part] - 1 +
+                                      (kTall[part + 1] - kTall[part]) * ease));
+    }
+
+    // What is drawn, as a key: nothing is drawn again while it's the same.
+    std::wstring Signature(double now) const {
+        float lift, wide, tall;
+        Wobble(now, &lift, &wide, &tall);
+        std::wstring key = L"y";
+        for (int e = 0; e < 2; e++) {
+            key += std::to_wstring((int)std::lround(pupilX[e] * 8)) + L"," +
+                   std::to_wstring((int)std::lround(pupilY[e] * 8)) + L",";
+        }
+        key += std::to_wstring((int)std::lround(width * 8)) + L"," +
+               std::to_wstring((int)std::lround(height * 8)) + L"," +
+               std::to_wstring((int)std::lround(lid * 50)) + L"," +
+               std::to_wstring((int)std::lround(lift * 8)) + L"," +
+               std::to_wstring((int)std::lround(wide * 50)) + L"," +
+               std::to_wstring((int)std::lround(tall * 50)) + L"," +
+               std::to_wstring(g_settings.islandEyeTheme) + L"," +
+               std::to_wstring(g_settings.islandEyeShape) + L"|";
+        return key;
+    }
+};
 // The next line of a song's lyrics (see Island::StepLyrics).
 constexpr UINT_PTR kLyricsTimerId = 54;
 // What's new's notice, a moment after the island starts (see
@@ -32199,6 +32655,148 @@ D2D1_COLOR_F RgbColor(int rgb, float alpha) {
     return {parts[0], parts[1], parts[2], alpha};
 }
 
+// A soft triangle for an eye's body (see kEyeShapes): the design's path, its
+// point up, its sides round and its bottom a little flat, in `rx` and `ry`
+// around (`cx`, `cy`).
+winrt::com_ptr<ID2D1PathGeometry> SoftTriangleGeometry(ID2D1Factory* factory,
+                                                       float cx,
+                                                       float cy,
+                                                       float rx,
+                                                       float ry) {
+    winrt::com_ptr<ID2D1PathGeometry> path;
+    winrt::com_ptr<ID2D1GeometrySink> sink;
+    if (!factory || FAILED(factory->CreatePathGeometry(path.put())) ||
+        FAILED(path->Open(sink.put()))) {
+        return nullptr;
+    }
+    auto at = [&](float x, float y) {
+        return D2D1_POINT_2F{cx + x * rx, cy + y * ry};
+    };
+    static constexpr float kCurves[4][6] = {
+        {0.30f, -1.02f, 0.72f, -0.48f, 0.91f, 0.30f},
+        {1.04f, 0.76f, 0.60f, 1.02f, 0.0f, 0.94f},
+        {-0.60f, 1.02f, -1.04f, 0.76f, -0.91f, 0.30f},
+        {-0.72f, -0.48f, -0.30f, -1.02f, 0.0f, -1.0f}};
+    sink->BeginFigure(at(0, -1), D2D1_FIGURE_BEGIN_FILLED);
+    for (const auto& curve : kCurves) {
+        const D2D1_BEZIER_SEGMENT segment{at(curve[0], curve[1]),
+                                          at(curve[2], curve[3]),
+                                          at(curve[4], curve[5])};
+        sink->AddBezier(&segment);
+    }
+    sink->EndFigure(D2D1_FIGURE_END_CLOSED);
+    if (FAILED(sink->Close())) {
+        return nullptr;
+    }
+    return path;
+}
+
+// An iris' color at `offset` of its gradient (0 its bright middle, 1 its
+// edge), 0xRRGGBB: its four colors (the design's stops, at 0, 45, 85 and
+// 100%) blended.
+int EyeIrisColor(const EyeTheme& theme, float offset) {
+    static constexpr float kAt[4] = {0, 0.45f, 0.85f, 1};
+    int part = 0;
+    while (part < 2 && offset > kAt[part + 1]) {
+        part++;
+    }
+    const float t =
+        std::clamp((offset - kAt[part]) / (kAt[part + 1] - kAt[part]), 0.0f,
+                   1.0f);
+    int rgb = 0;
+    for (int shift = 16; shift >= 0; shift -= 8) {
+        const int from = (theme.stops[part] >> shift) & 0xFF;
+        const int to = (theme.stops[part + 1] >> shift) & 0xFF;
+        rgb |= (int)std::lround(from + (to - from) * t) << shift;
+    }
+    return rgb;
+}
+
+// The eyes drawn in `rect`: for each, its rim, its iris (rings from the dark
+// edge to the bright middle, which sits a little up and to the left, like
+// the design's gradient, without a gradient to make and keep), the pupil
+// looking where it does, two glints and the lid of a blink. `opacity` is
+// the pill's content's; `now` tells the wobble of excitement.
+void DrawEyes(ID2D1RenderTarget* target,
+              ID2D1Factory* factory,
+              ID2D1SolidColorBrush* brush,
+              const D2D1_RECT_F& rect,
+              const EyesState& eyes,
+              const EyeTheme& theme,
+              const EyeShape& shape,
+              float opacity,
+              double now) {
+    const float unit = EyesUnit(rect, shape);
+    if (opacity <= 0.01f || unit < 0.05f) {
+        return;
+    }
+    float lift = 0;
+    float wide = 1;
+    float tall = 1;
+    eyes.Wobble(now, &lift, &wide, &tall);
+    const float middleX = (rect.left + rect.right) / 2;
+    const float cy = (rect.top + rect.bottom) / 2 + lift * unit;
+    // An eye's body: an ellipse, or the soft triangle.
+    auto body = [&](float x, float y, float rx, float ry) {
+        if (shape.triangle) {
+            if (auto path = SoftTriangleGeometry(factory, x, y, rx, ry)) {
+                target->FillGeometry(path.get(), brush);
+            }
+        } else {
+            target->FillEllipse({{x, y}, rx, ry}, brush);
+        }
+    };
+    const float rx = shape.rx * unit * wide;
+    const float ry = shape.ry * unit * tall;
+    constexpr int kRings = 6;
+    for (int e = 0; e < 2; e++) {
+        const float cx =
+            middleX + (e == 0 ? -1.0f : 1.0f) * (shape.rx + 4) * unit * wide;
+        brush->SetColor(RgbColor(theme.socket, opacity));
+        body(cx, cy, rx + unit, ry + unit);
+        for (int ring = 0; ring < kRings; ring++) {
+            const float size = 1.0f - (float)ring / kRings;
+            brush->SetColor(
+                RgbColor(EyeIrisColor(theme, size * 0.9f), opacity));
+            body(cx - (1 - size) * 0.30f * rx, cy - (1 - size) * 0.35f * ry,
+                 rx * size, ry * size);
+        }
+        // The pupil stays inside the iris, whatever its size.
+        const float roomX =
+            std::max(0.0f, shape.rx - 1 - (float)eyes.width);
+        const float roomY =
+            std::max(0.0f, shape.ry - 1 - (float)eyes.height);
+        const float px =
+            cx + std::clamp((float)eyes.pupilX[e], -roomX, roomX) * unit * wide;
+        const float py =
+            cy + std::clamp((float)eyes.pupilY[e], -roomY, roomY) * unit * tall;
+        brush->SetColor(RgbColor(theme.pupil, opacity));
+        target->FillEllipse({{px, py},
+                             (float)eyes.width * unit * wide,
+                             (float)eyes.height * unit * tall},
+                            brush);
+        // (Still: the design's glints drift, but a drift never ends.)
+        brush->SetColor({1, 1, 1, 0.95f * opacity});
+        target->FillEllipse({{px - 5 * unit * wide, py - 8 * unit * tall},
+                             3.5f * unit * wide,
+                             3.5f * unit * tall},
+                            brush);
+        brush->SetColor({1, 1, 1, 0.75f * opacity});
+        target->FillEllipse({{px + 3 * unit * wide, py + 5 * unit * tall},
+                             1.8f * unit * wide,
+                             1.8f * unit * tall},
+                            brush);
+        // The lid closing from the top.
+        if (eyes.lid > 0.001) {
+            const float pad = shape.triangle ? 1.8f : 1.5f;
+            const float full = (shape.ry + pad) * unit * tall;
+            const float shown = full * (float)eyes.lid;
+            brush->SetColor(RgbColor(theme.lid, opacity));
+            body(cx, cy - full + shown, (shape.rx + pad) * unit * wide, shown);
+        }
+    }
+}
+
 // Windows' accent color (Settings, Personalization, Colors), 0xRRGGBB.
 int ReadWindowsAccentColor() {
     DWORD value = 0;
@@ -37713,6 +38311,11 @@ enum class IslandPref {
     LineClick,
     ExternalBrightness,
     GlassLight,
+    // The dragon's eyes, and their colors and shape (kChoiceEyeTheme,
+    // kChoiceEyeShape).
+    Eyes,
+    EyeTheme,
+    EyeShape,
 };
 
 struct IslandPrefInfo {
@@ -38120,6 +38723,12 @@ const IslandPrefInfo kIslandPrefs[] = {
      L"Brightness of external monitors (DDC/CI)", L"Brilho de monitores externos (DDC/CI)"},
     {IslandPref::GlassLight, L"islandGlassLight", 0xE81E,
      L"Light and shadow like macOS 27", L"Luz e sombra como no macOS 27"},
+    {IslandPref::Eyes, L"islandEyes", 0xE7B3,
+     L"Dragon eyes that follow the mouse", L"Olhos de dragão que seguem o mouse"},
+    {IslandPref::EyeTheme, L"islandEyeTheme", 0xE790, L"Eyes' colors",
+     L"Cores dos olhos"},
+    {IslandPref::EyeShape, L"islandEyeShape", 0xE7B3, L"Eyes' shape",
+     L"Formato dos olhos"},
 };
 
 // The groups of items on the pill, which can be put in another order in the
@@ -38193,6 +38802,8 @@ enum class PillGroup {
     AiUsage,
     Commands,
     Shelf,
+    // (The dragon's eyes: after the others.)
+    Eyes,
     Count
 };
 constexpr int kPillGroups = (int)PillGroup::Count;
@@ -38263,6 +38874,7 @@ const PillGroupInfo kPillGroupInfo[kPillGroups] = {
     {kGlyphAiUsage, L"AI usage", L"Uso de IA"},
     {0xE756, L"Your commands", L"Seus comandos"},
     {0xE7B8, L"Shelf", L"Prateleira"},
+    {0xE7B3, L"Dragon eyes", L"Olhos de dragão"},
 };
 
 // Whether any of the processor, memory and video memory use is shown (the
@@ -38577,6 +39189,8 @@ int PillGroupPref(PillGroup group) {
             return (int)IslandPref::Commands;
         case PillGroup::Shelf:
             return (int)IslandPref::Shelf;
+        case PillGroup::Eyes:
+            return (int)IslandPref::Eyes;
         default: {
             const int action = PillActionOfGroup(group);
             return action >= 0 ? (int)kPillActions[action].pref : -1;
@@ -39173,6 +39787,9 @@ enum ChoiceId {
     kChoiceSetupItems,
     kChoiceSetupHide,
     kChoiceSetupTheme,
+    // The dragon eyes' colors and shape (islandEyeTheme, islandEyeShape).
+    kChoiceEyeTheme,
+    kChoiceEyeShape,
     kChoiceCount
 };
 
@@ -39306,6 +39923,10 @@ int ChoiceCount(int id) {
             return (int)std::size(kBannerSizes);
         case kChoiceShelfLimit:
             return (int)std::size(kShelfLimits);
+        case kChoiceEyeTheme:
+            return (int)std::size(kEyeThemes);
+        case kChoiceEyeShape:
+            return (int)std::size(kEyeShapes);
         case kChoiceBannerWidth:
             return (int)std::size(kBannerWidths);
         case kChoiceBannerCorners:
@@ -39468,6 +40089,19 @@ std::wstring ChoiceOption(int id, int index) {
             static_assert(std::size(kNames) == std::size(kShelfLimits));
             return kNames[std::clamp(index, 0, (int)std::size(kNames) - 1)];
         }
+        case kChoiceEyeTheme:
+            return index == 0   ? Tr(L"Emerald (Toothless)", L"Esmeralda (Banguela)")
+                   : index == 1 ? Tr(L"Ocean blue", L"Azul oceano")
+                   : index == 2 ? Tr(L"Sunset amber", L"Âmbar do pôr do sol")
+                   : index == 3 ? Tr(L"Mystic violet", L"Violeta místico")
+                   : index == 4 ? Tr(L"Crimson", L"Carmesim")
+                                : Tr(L"Arctic ice", L"Gelo do Ártico");
+        case kChoiceEyeShape:
+            return index == 0   ? Tr(L"Toothless", L"Banguela")
+                   : index == 1 ? Tr(L"Round", L"Redondo")
+                   : index == 2 ? Tr(L"Wide oval", L"Oval largo")
+                   : index == 3 ? Tr(L"Almond", L"Amêndoa")
+                                : Tr(L"Soft triangle", L"Triângulo suave");
         case kChoiceBannerWidth:
             return index == 0   ? Tr(L"Narrow", L"Estreito")
                    : index == 1 ? Tr(L"Normal", L"Normal")
@@ -39640,6 +40274,10 @@ int ChoiceValue(int id) {
             return g_settings.islandBannerSize;
         case kChoiceShelfLimit:
             return g_settings.islandShelfLimit;
+        case kChoiceEyeTheme:
+            return g_settings.islandEyeTheme;
+        case kChoiceEyeShape:
+            return g_settings.islandEyeShape;
         case kChoiceBannerWidth:
             return g_settings.islandBannerWidth;
         case kChoiceBannerCorners:
@@ -39751,6 +40389,9 @@ bool ChoiceDisabled(int id) {
             return !g_bannerEnabled;
         case kChoiceShelfLimit:
             return !g_settings.islandShelf;
+        case kChoiceEyeTheme:
+        case kChoiceEyeShape:
+            return !g_settings.islandEyes;
         case kChoiceFolderDrag:
             return !g_settings.islandFolders;
         case kChoiceFillColor:
@@ -67788,6 +68429,17 @@ class Island final : public DropTarget::Receiver {
     winrt::com_ptr<IAudioMeterInformation> m_vizMeter;
     std::array<float, kVizBars> m_vizLevels{};
     bool m_vizRunning = false;
+    // The dragon's eyes (islandEyes, see EyesState): whether they're on the
+    // pill and seen (their watch timer runs), whether something moves (and
+    // frames run for it), the time gathered towards their next step, where the
+    // mouse was when the timer last saw it move, and whether a notification
+    // already excited them.
+    EyesState m_eyes;
+    bool m_eyesRunning = false;
+    bool m_eyesMoving = false;
+    bool m_eyesNotified = false;
+    double m_eyesSince = 0;
+    POINT m_eyesCursor{-1, -1};
     // Some sound on the output now (any app: also one that doesn't tell
     // Windows' media controls what it plays, like VLC), and when it was last
     // heard (see CheckAudioPlaying).
@@ -67820,6 +68472,13 @@ class Island final : public DropTarget::Receiver {
     double m_vizSinceShown = 0;
     void UpdateVisualizerTimer();
     void UpdateFillTimer();
+    void UpdateEyesTimer();
+    void OnEyesTimer();
+    bool StepEyes(double dt);
+    void BlinkEyes();
+    const IslandSlot* EyesSlot() const;
+    bool EyesAlerted() const;
+    EyesView EyesLook(const IslandSlot& slot) const;
     void StepVisualizer(double dt);
     void ReadVisualizerSound();
     std::vector<winrt::com_ptr<IAudioMeterInformation>> FindSessionMeters(
@@ -71399,6 +72058,10 @@ std::wstring ControlPanel::SettingName(const SettingEntry& entry) const {
                     ? Tr(L"Banner size", L"Tamanho do aviso")
                 : id == kChoiceShelfLimit
                     ? Tr(L"Shelf holds", L"A prateleira guarda")
+                : id == kChoiceEyeTheme
+                    ? Tr(L"Eyes' colors", L"Cores dos olhos")
+                : id == kChoiceEyeShape
+                    ? Tr(L"Eyes' shape", L"Formato dos olhos")
                 : id == kChoiceBannerWidth
                     ? Tr(L"Banner width", L"Largura do aviso")
                 : id == kChoiceBannerCorners
@@ -72141,6 +72804,17 @@ std::wstring ControlPanel::SettingDescription(const SettingEntry& entry) const {
          L"another app later (their places are kept, not copies)",
          L"Solte arquivos na pílula para guardá-los ali e depois arraste para "
          L"outro app (guarda onde eles estão, não cópias)"},
+        {SettingKind::Pref, (int)IslandPref::Eyes,
+         L"Two dragon eyes on the pill: they follow the mouse when it is "
+         L"near, blink, glance around and get excited with a notification",
+         L"Dois olhos de dragão na pílula: seguem o mouse quando ele está "
+         L"perto, piscam, olham em volta e se animam com uma notificação"},
+        {SettingKind::Choice, kChoiceEyeTheme,
+         L"The eyes' colors",
+         L"As cores dos olhos"},
+        {SettingKind::Choice, kChoiceEyeShape,
+         L"The eyes' shape",
+         L"O formato dos olhos"},
         {SettingKind::Pref, (int)IslandPref::TimerLine,
          L"While a timer, Pomodoro or the stopwatch runs, the line becomes a "
          L"small pill with its ring and its time (with Only the clock, the "
@@ -72725,6 +73399,10 @@ std::wstring ControlPanel::SettingText(const SettingEntry& entry) const {
                     : entry.value == kChoiceShelfLimit
                         ? L" Shelf files how many limit Prateleira arquivos "
                           L"quantos limite"
+                    : entry.value == kChoiceEyeTheme ||
+                            entry.value == kChoiceEyeShape
+                        ? L" Eyes dragon Toothless color shape Olhos dragão "
+                          L"Banguela cor formato"
                     : entry.value == kChoiceBannerSize ||
                             entry.value == kChoiceBannerWidth ||
                             entry.value == kChoiceBannerCorners ||
@@ -73375,6 +74053,9 @@ void ControlPanel::LayoutSettings() {
             {(int)SettingKind::Pref, (int)IslandPref::Shelf, kSectionDesktop},
             {(int)SettingKind::Choice, kChoiceShelfLimit, kSectionDesktop, 1},
             {(int)SettingKind::Choice, kChoiceFolderDrag, kSectionDesktop, 1},
+            {(int)SettingKind::Pref, (int)IslandPref::Eyes, kSectionDesktop},
+            {(int)SettingKind::Choice, kChoiceEyeTheme, kSectionDesktop, 1},
+            {(int)SettingKind::Choice, kChoiceEyeShape, kSectionDesktop, 1},
             {(int)SettingKind::Pref, (int)IslandPref::Wallpaper,
              kSectionDesktop},
             {(int)SettingKind::Choice, kChoiceWallpaper, kSectionDesktop, 1},
@@ -76770,6 +77451,9 @@ std::wstring ControlPanel::DisabledReason(int index) {
                 return needs(IslandPref::Banner);
             case kChoiceShelfLimit:
                 return needs(IslandPref::Shelf);
+            case kChoiceEyeTheme:
+            case kChoiceEyeShape:
+                return needs(IslandPref::Eyes);
             case kChoiceHideWhen:
                 return !g_settings.islandAutoHide
                            ? needs(IslandPref::AutoHide)
@@ -77097,6 +77781,9 @@ ControlPanel::SettingTarget ControlPanel::DisabledTarget(int index) {
                 return pref(IslandPref::Banner);
             case kChoiceShelfLimit:
                 return pref(IslandPref::Shelf);
+            case kChoiceEyeTheme:
+            case kChoiceEyeShape:
+                return pref(IslandPref::Eyes);
             case kChoiceFolderDrag:
                 return pref(IslandPref::Folders);
             case kChoiceFillColor:
@@ -78141,6 +78828,9 @@ void ControlPanel::DrawSettingEntry(ID2D1RenderTarget* target,
                                     : id == kChoiceBannerCorners ? 0xE71A
                                     : id == kChoiceBannerPlace  ? 0xE81E
                                     : id == kChoiceShelfLimit   ? 0xE7B8
+                                    : id == kChoiceEyeTheme ||
+                                              id == kChoiceEyeShape
+                                        ? 0xE7B3
                                     : id == kChoiceFolderDrag   ? 0xE8C8
                                     : id == kChoiceLanguage ||
                                               id == kChoiceNotesLanguage
@@ -81175,6 +81865,10 @@ bool ControlPanel::OnMouseUp(POINT pt) {
                 SetIslandPref(IslandPref::BannerSize, index);
             } else if (id == kChoiceShelfLimit) {
                 SetIslandPref(IslandPref::ShelfLimit, index);
+            } else if (id == kChoiceEyeTheme) {
+                SetIslandPref(IslandPref::EyeTheme, index);
+            } else if (id == kChoiceEyeShape) {
+                SetIslandPref(IslandPref::EyeShape, index);
             } else if (id == kChoiceBannerWidth) {
                 SetIslandPref(IslandPref::BannerWidth, index);
             } else if (id == kChoiceBannerCorners) {
@@ -87757,6 +88451,12 @@ int GetIslandPref(IslandPref pref) {
             return g_settings.islandFolderThumbnails;
         case IslandPref::Shelf:
             return g_settings.islandShelf;
+        case IslandPref::Eyes:
+            return g_settings.islandEyes;
+        case IslandPref::EyeTheme:
+            return g_settings.islandEyeTheme;
+        case IslandPref::EyeShape:
+            return g_settings.islandEyeShape;
         case IslandPref::TimerLine:
             return g_settings.islandTimerLine;
         case IslandPref::ExternalBrightness:
@@ -88273,6 +88973,17 @@ void SetIslandPref(IslandPref pref, int value) {
             break;
         case IslandPref::Shelf:
             g_settings.islandShelf = on;
+            break;
+        case IslandPref::Eyes:
+            g_settings.islandEyes = on;
+            break;
+        case IslandPref::EyeTheme:
+            g_settings.islandEyeTheme =
+                std::clamp(value, 0, (int)std::size(kEyeThemes) - 1);
+            break;
+        case IslandPref::EyeShape:
+            g_settings.islandEyeShape =
+                std::clamp(value, 0, (int)std::size(kEyeShapes) - 1);
             break;
         case IslandPref::TimerLine:
             g_settings.islandTimerLine = on;
@@ -89695,6 +90406,17 @@ void SetIslandPrefValue(IslandPref pref, int value) {
             break;
         case IslandPref::Shelf:
             g_settings.islandShelf = on;
+            break;
+        case IslandPref::Eyes:
+            g_settings.islandEyes = on;
+            break;
+        case IslandPref::EyeTheme:
+            g_settings.islandEyeTheme =
+                std::clamp(value, 0, (int)std::size(kEyeThemes) - 1);
+            break;
+        case IslandPref::EyeShape:
+            g_settings.islandEyeShape =
+                std::clamp(value, 0, (int)std::size(kEyeShapes) - 1);
             break;
         case IslandPref::TimerLine:
             g_settings.islandTimerLine = on;
@@ -91451,6 +92173,8 @@ bool Island::GroupWanted(PillGroup group) const {
             return g_settings.islandCommands;
         case PillGroup::Shelf:
             return g_settings.islandShelf && !Shelf().empty();
+        case PillGroup::Eyes:
+            return g_settings.islandEyes;
         default: {
             // A control center button: its own option.
             const int action = PillActionOfGroup(group);
@@ -92691,6 +93415,7 @@ void Island::Destroy() {
     if (m_hwnd) {
         KillTimer(m_hwnd, kBannerTimerId);
         KillTimer(m_hwnd, kMediaTimerId);
+        KillTimer(m_hwnd, kEyesTimerId);
     }
     if (m_bannerWnd) {
         DestroyWindow(m_bannerWnd);
@@ -95448,6 +96173,16 @@ void Island::Layout() {
                 m_shelfText.text = std::to_wstring(Shelf().size());
                 addSideText(IslandItem::Shelf, m_shelfText);
                 break;
+            case PillGroup::Eyes: {
+                // Two eyes, as wide as their shape asks (see EyesWidth).
+                const float eyesWidth = EyesWidth(ChosenEyeShape(), height);
+                m_slots.push_back({IslandItem::Eyes,
+                                   {x, 0, x + eyesWidth, height},
+                                   L"",
+                                   kEyesFont});
+                x += eyesWidth + spacing;
+                break;
+            }
             case PillGroup::Visualizer:
                 m_slots.push_back({IslandItem::Visualizer,
                                    {x, 0, x + iconSlot, height},
@@ -97609,6 +98344,7 @@ void Island::Render(bool force) {
     }
     UpdateVisualizerTimer();
     UpdateFillTimer();
+    UpdateEyesTimer();
     UpdateGlass();
     RenderTrayTip();
     // Gliding to another monitor: from where the dot was.
@@ -97733,6 +98469,10 @@ void Island::Render(bool force) {
             key += L"r" + std::to_wstring((long long)(NowSeconds() *
                                                        kRainbowTurns * 360));
         }
+    }
+    // The eyes' look (the colors and shape too), when they're on the pill.
+    if (EyesSlot()) {
+        key += m_eyes.Signature(NowSeconds());
     }
     if (m_fillAmount > 0.001) {
         key += L"f" + std::to_wstring((int)(m_fillAmount * 1000)) + L"," +
@@ -98552,6 +99292,13 @@ void Island::Render(bool force) {
                     }
                 }
                 target->PopAxisAlignedClip();
+                continue;
+            }
+            if (slot.font == kEyesFont) {
+                DrawEyes(target, m_d2d.get(), brush.get(), slot.rect, m_eyes,
+                         ChosenEyeTheme(), ChosenEyeShape(),
+                         contentOpacity * std::clamp(slot.scale, 0.0f, 1.0f),
+                         NowSeconds());
                 continue;
             }
             if (slot.font == kVisualizerFont) {
@@ -99924,6 +100671,10 @@ std::wstring Island::ItemTip(IslandItem item, const std::wstring& text) const {
     }
     if (item == IslandItem::FocusedApp) {
         return FocusedText();
+    }
+    if (item == IslandItem::Eyes) {
+        return Tr(L"Dragon eyes (click to blink)",
+                  L"Olhos de dragão (clique para piscar)");
     }
     if (item == IslandItem::Visualizer) {
         return Tr(L"Audio visualizer", L"Visualizador de áudio");
@@ -101669,6 +102420,10 @@ void Island::AnimationFrame() {
         StepVisualizer(dt);
         apps = true;
     }
+    // The dragon's eyes, only while something moves (they ask to go on).
+    if (m_eyesRunning && StepEyes(dt)) {
+        apps = true;
+    }
     // Groups sliding to their new places (another order), and shrinking
     // away or growing in.
     for (int i = 0; i < kPillGroups; i++) {
@@ -102666,6 +103421,141 @@ void Island::UpdateFillTimer() {
     } else {
         KillTimer(m_hwnd, kChargeFillTimerId);
     }
+}
+
+// The dragon's eyes (islandEyes, see EyesState). The frames run only while
+// something moves (StepEyes says so, see AnimationFrame); this timer, every
+// kEyesWatchMs, only looks whether the mouse came near or a blink or a glance
+// is due, and wakes them for it. It runs only while the eyes are on the pill
+// and seen (not minimized, nor away over a full-screen app, nor with the
+// animations off), and it's gone with them.
+const IslandSlot* Island::EyesSlot() const {
+    for (const auto& slot : m_slots) {
+        if (slot.item == IslandItem::Eyes) {
+            return &slot;
+        }
+    }
+    return nullptr;
+}
+
+// What excites them: a notification waiting unseen, or a banner.
+bool Island::EyesAlerted() const {
+    return m_unseen || m_bannerAmount > 0.5;
+}
+
+// What the eyes see now: the mouse, from each of them.
+EyesView Island::EyesLook(const IslandSlot& slot) const {
+    EyesView view;
+    POINT cursor{};
+    if (!GetCursorPos(&cursor) || !ScreenToClient(m_hwnd, &cursor)) {
+        return view;
+    }
+    const EyeShape& shape = ChosenEyeShape();
+    const float unit = EyesUnit(slot.rect, shape);
+    const float middleX = (slot.rect.left + slot.rect.right) / 2;
+    const float middleY = (slot.rect.top + slot.rect.bottom) / 2;
+    const double away = std::hypot((double)cursor.x - middleX,
+                                   (double)cursor.y - middleY);
+    const double radius = kEyesRadius * (double)m_scale;
+    if (away > radius) {
+        return view;
+    }
+    view.nearby = true;
+    view.distance = away / m_scale;
+    view.closeness = std::clamp(1 - away / radius, 0.0, 1.0);
+    for (int e = 0; e < 2; e++) {
+        const float x =
+            middleX + (e == 0 ? -1.0f : 1.0f) * (shape.rx + 4) * unit;
+        view.dx[e] = cursor.x - x;
+        view.dy[e] = cursor.y - middleY;
+    }
+    return view;
+}
+
+void Island::UpdateEyesTimer() {
+    const bool shown = m_hwnd && !m_away && !m_minimized && !m_barHidden &&
+                       AnimationLevel() < 2 && EyesSlot();
+    if (shown == m_eyesRunning) {
+        return;
+    }
+    m_eyesRunning = shown;
+    // (Shown again, they start anew: open, looking ahead, nothing waiting to
+    // excite them but what comes now.)
+    m_eyes.Reset();
+    if (shown) {
+        m_eyesNotified = EyesAlerted();
+        m_eyesMoving = true;
+        m_eyesSince = kEyesFrameSeconds;
+        SetTimer(m_hwnd, kEyesTimerId, kEyesWatchMs, nullptr);
+        StartAnimating();
+    } else {
+        m_eyesMoving = false;
+        if (m_hwnd) {
+            KillTimer(m_hwnd, kEyesTimerId);
+        }
+    }
+}
+
+// A step of the eyes every frame they're awake (see AnimationFrame), at most
+// kEyesFrameSeconds apart: true while something moves, so the frames go on.
+bool Island::StepEyes(double dt) {
+    m_eyesSince += dt;
+    if (m_eyesSince < kEyesFrameSeconds) {
+        return m_eyesMoving;
+    }
+    const double elapsed = std::min(m_eyesSince, 0.1);
+    m_eyesSince = 0;
+    const IslandSlot* slot = EyesSlot();
+    if (!slot) {
+        m_eyesMoving = false;
+        return false;
+    }
+    EyesView view = EyesLook(*slot);
+    const bool alerted = EyesAlerted();
+    view.excite = alerted && !m_eyesNotified;
+    m_eyesNotified = alerted;
+    m_eyesMoving =
+        m_eyes.Step(NowSeconds(), elapsed, view, ChosenEyeShape());
+    return m_eyesMoving;
+}
+
+void Island::OnEyesTimer() {
+    const IslandSlot* slot = m_eyesRunning ? EyesSlot() : nullptr;
+    if (!slot) {
+        return;
+    }
+    if (m_eyesMoving) {
+        // (The frames look after them; woken again if they somehow stopped.)
+        if (!Animating()) {
+            StartAnimating();
+        }
+        return;
+    }
+    bool wake = m_eyes.Due(NowSeconds()) || EyesAlerted() != m_eyesNotified;
+    POINT cursor{};
+    if (!wake && GetCursorPos(&cursor) &&
+        (cursor.x != m_eyesCursor.x || cursor.y != m_eyesCursor.y)) {
+        // The mouse moved: only matters near them (or just away from them,
+        // the pupils going back to the middle).
+        m_eyesCursor = cursor;
+        wake = m_eyes.WasNear() || EyesLook(*slot).nearby;
+    }
+    if (wake) {
+        m_eyesMoving = true;
+        m_eyesSince = kEyesFrameSeconds;
+        StartAnimating();
+    }
+}
+
+// A click on them: a blink.
+void Island::BlinkEyes() {
+    if (!m_eyesRunning) {
+        return;
+    }
+    m_eyes.Blink();
+    m_eyesMoving = true;
+    m_eyesSince = kEyesFrameSeconds;
+    StartAnimating();
 }
 
 // Its bars moving each frame (see AnimationFrame) while they're on the pill
@@ -106556,6 +107446,9 @@ void Island::OnClick(IslandItem item, const std::wstring& appId) {
         case IslandItem::Shelf:
             TogglePanel(m_shelfPanel, item);
             break;
+        case IslandItem::Eyes:
+            BlinkEyes();
+            break;
         case IslandItem::Commands: {
             // A pinned one runs; the icon opens their panel.
             const auto& commands = Commands();
@@ -107127,6 +108020,10 @@ LRESULT Island::HandleMessage(HWND hWnd, UINT msg, WPARAM wParam,
             }
             if (wParam == kChargeFillTimerId) {
                 StartAnimating();
+                return 0;
+            }
+            if (wParam == kEyesTimerId) {
+                OnEyesTimer();
                 return 0;
             }
             if (wParam == kAlarmSoundStopTimerId) {
@@ -108627,6 +109524,13 @@ void LoadSettings() {
     g_settings.islandFolderThumbnails =
         Wh_GetIntValue(L"islandFolderThumbnails", 1) != 0;
     g_settings.islandShelf = Wh_GetIntValue(L"islandShelf", 0) != 0;
+    g_settings.islandEyes = Wh_GetIntValue(L"islandEyes", 0) != 0;
+    g_settings.islandEyeTheme =
+        std::clamp(Wh_GetIntValue(L"islandEyeTheme", 0), 0,
+                   (int)std::size(kEyeThemes) - 1);
+    g_settings.islandEyeShape =
+        std::clamp(Wh_GetIntValue(L"islandEyeShape", 0), 0,
+                   (int)std::size(kEyeShapes) - 1);
     g_settings.islandTimerLine = Wh_GetIntValue(L"islandTimerLine", 1) != 0;
     g_settings.islandExternalBrightness =
         Wh_GetIntValue(L"islandExternalBrightness", 1) != 0;
