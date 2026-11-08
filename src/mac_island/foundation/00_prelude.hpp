@@ -1,0 +1,106 @@
+#include <windhawk_utils.h>
+
+#include <appmodel.h>
+#include <aclapi.h>
+#include <audiopolicy.h>
+#include <bluetoothapis.h>
+#include <cfgmgr32.h>
+#include <commdlg.h>
+#include <d2d1.h>
+#include <d2d1_1.h>
+#include <d2d1_3.h>
+#include <dbt.h>
+#include <devicetopology.h>
+#include <dwmapi.h>
+#include <dwrite.h>
+#include <endpointvolume.h>
+#include <exdisp.h>
+#include <highlevelmonitorconfigurationapi.h>
+#include <imm.h>
+#include <mmdeviceapi.h>
+// The notification sounds (PlaySound; WIN32_LEAN_AND_MEAN leaves it out).
+#include <mmsystem.h>
+#include <msctf.h>
+#include <netlistmgr.h>
+// The network adapters' table (GetIfTable2) needs the Winsock types first
+// (WIN32_LEAN_AND_MEAN, in the compiler options, keeps windows.h from pulling
+// the old winsock.h in before it).
+#include <winsock2.h>
+#include <ws2ipdef.h>
+#include <iphlpapi.h>
+#include <dxgi.h>
+#include <pdh.h>
+#include <psapi.h>
+#include <physicalmonitorenumerationapi.h>
+#include <propsys.h>
+#include <wbemidl.h>
+#include <wincodec.h>
+#include <winhttp.h>
+#include <winioctl.h>
+#include <wlanapi.h>
+#include <setupapi.h>
+#include <shellapi.h>
+#include <sddl.h>
+#include <shellscalingapi.h>
+#include <shldisp.h>
+#include <shlobj.h>
+#include <shlwapi.h>
+#include <shobjidl.h>
+#include <tlhelp32.h>
+#include <userenv.h>
+#include <uiautomation.h>
+#include <wuapi.h>
+#include <dispatcherqueue.h>
+
+#include <algorithm>
+#include <array>
+#include <atomic>
+#include <chrono>
+#include <climits>
+#include <cmath>
+#include <cstdio>
+#include <cwctype>
+#include <functional>
+#include <limits>
+#include <memory>
+#include <optional>
+#include <string>
+#include <string_view>
+#include <unordered_map>
+#include <utility>
+#include <vector>
+
+#undef GetCurrentTime
+
+#include <winrt/Windows.Devices.Geolocation.h>
+#include <winrt/Windows.Devices.Radios.h>
+#include <winrt/Windows.Foundation.Collections.h>
+#include <winrt/Windows.Foundation.h>
+#include <winrt/Windows.Graphics.Effects.h>
+#include <winrt/Windows.Graphics.h>
+#include <winrt/Windows.System.h>
+#include <winrt/Windows.UI.Composition.Desktop.h>
+#include <winrt/Windows.Media.Control.h>
+#include <winrt/Windows.Media.Core.h>
+#include <winrt/Windows.UI.Notifications.h>
+#include <winrt/Windows.Media.Playback.h>
+#include <winrt/Windows.Networking.Connectivity.h>
+#include <winrt/Windows.Networking.NetworkOperators.h>
+#include <winrt/Windows.Storage.Streams.h>
+#include <winrt/Windows.UI.Composition.h>
+#include <winrt/Windows.UI.Input.h>
+#include <winrt/Windows.UI.Xaml.Automation.Peers.h>
+#include <winrt/Windows.UI.Xaml.Automation.Provider.h>
+#include <winrt/Windows.UI.Xaml.Automation.h>
+#include <winrt/Windows.UI.Xaml.Controls.Primitives.h>
+#include <winrt/Windows.UI.Xaml.Controls.h>
+#include <winrt/Windows.UI.Xaml.Data.h>
+#include <winrt/Windows.UI.Xaml.Hosting.h>
+#include <winrt/Windows.UI.Xaml.Input.h>
+#include <winrt/Windows.UI.Xaml.Markup.h>
+#include <winrt/Windows.UI.Xaml.Media.Imaging.h>
+#include <winrt/Windows.UI.Xaml.Media.h>
+#include <winrt/Windows.UI.Xaml.Shapes.h>
+#include <winrt/Windows.UI.Xaml.h>
+#include <winrt/Windows.UI.h>
+

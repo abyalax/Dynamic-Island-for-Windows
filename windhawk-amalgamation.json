@@ -5,7 +5,9 @@
   "entries": [
     "**/*.cpp"
   ],
-  "exclude": [],
+  "exclude": [
+    "local@dynamic-island-for-windows.wh.cpp"
+  ],
   "includeDirectories": [
     "src"
   ],
