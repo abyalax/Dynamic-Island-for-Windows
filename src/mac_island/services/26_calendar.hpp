@@ -1,3 +1,4 @@
+#pragma once
 // A link or a path as typed or pasted (quotes and spaces around it gone,
 // webcal:// read as https://, a Google Calendar page's link as its iCal
 // address); nothing when it's neither an https link nor a file's path on a

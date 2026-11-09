@@ -1,3 +1,4 @@
+#pragma once
 bool IsUrgentToast(const char* xml, int size) {
     const std::string_view view{xml, (size_t)std::max(size, 0)};
     const size_t at = view.find("<toast");

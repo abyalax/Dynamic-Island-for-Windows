@@ -1,3 +1,4 @@
+#pragma once
 // Waits `ms`, handling the thread's messages, unless it's told to quit
 // meanwhile (false then).
 bool WaitUnlessQuit(DWORD ms) {

@@ -1,3 +1,4 @@
+#pragma once
 void Island::CheckAlarms() {
     if (!m_main || m_notchBase) {
         return;

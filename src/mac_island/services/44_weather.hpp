@@ -1,3 +1,4 @@
+#pragma once
 class WeatherPanel : public EditingPanel {
    public:
     // New weather came (`problem`: 1 city not found, 2 no answer, 3 location

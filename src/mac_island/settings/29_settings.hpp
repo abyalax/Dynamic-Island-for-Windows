@@ -1,3 +1,4 @@
+#pragma once
 // The island's own options, chosen in it (the control center's settings,
 // from the bubble of a right click on the island) rather than in Windhawk, and kept with Wh_SetIntValue.
 enum class IslandPref {

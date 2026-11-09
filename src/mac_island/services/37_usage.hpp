@@ -1,3 +1,4 @@
+#pragma once
 struct UsageDetails {
     // Percent.
     int cpu = -1;

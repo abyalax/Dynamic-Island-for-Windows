@@ -1,3 +1,4 @@
+#pragma once
 // The media thread's own copies of its events (stop, changed, command), so
 // StopMediaWatch can give up waiting for it (a media app's call that hangs)
 // and close the island's; the thread closes these when it ends.

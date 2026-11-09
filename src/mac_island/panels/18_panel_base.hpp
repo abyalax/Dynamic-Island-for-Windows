@@ -1,3 +1,4 @@
+#pragma once
 void GlassLayer::Show(HWND owner,
                       POINT position,
                       SIZE size,

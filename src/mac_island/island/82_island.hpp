@@ -1,3 +1,4 @@
+#pragma once
 void Island::OpenFromShortcut(bool control) {
     // Hidden (a full-screen app): Windows' own panel, as without the island
     // (sent as a new shortcut, which the hook lets through).

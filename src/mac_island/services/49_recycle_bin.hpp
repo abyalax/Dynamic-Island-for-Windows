@@ -1,3 +1,4 @@
+#pragma once
 // Whether its item shows on the pill: on, with enough in it (see
 // kRecycleMinMegabytes; not counted yet, only "always").
 bool RecycleBinShown() {

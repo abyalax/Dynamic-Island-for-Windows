@@ -1,3 +1,4 @@
+#pragma once
 void Island::WatchTrayAppWindows(const TrayIcon& icon) {
     StopWatchingTrayAppWindows();
     m_trayAppAnchor = {-1, -1};

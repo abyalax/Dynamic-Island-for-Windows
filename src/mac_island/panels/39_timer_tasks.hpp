@@ -1,3 +1,4 @@
+#pragma once
 class NotesPanel : public EditingPanel {
    protected:
     void Prepare(float scale) override {

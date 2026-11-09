@@ -1,3 +1,4 @@
+#pragma once
 // A pinned icon's place: -1 with the tray, a group's number after that
 // group, or TrayAnchorBefore(group) before it.
 int TrayAnchorBefore(PillGroup group) {

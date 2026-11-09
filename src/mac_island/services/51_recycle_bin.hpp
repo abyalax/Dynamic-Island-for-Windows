@@ -1,3 +1,4 @@
+#pragma once
 // The Recycle Bin's item clicked (islandRecycleBin): what's in it, opened in
 // Explorer, or emptied with a second click on "Empty" (on a thread of its
 // own, Windows' own emptying).

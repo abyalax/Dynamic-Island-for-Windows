@@ -1,3 +1,4 @@
+#pragma once
 // Listed by the main island while one of the options is on: when it starts,
 // and as drives come and go.
 void Island::UpdateDrivesWatch() {

@@ -1,3 +1,4 @@
+#pragma once
 class Panel {
    public:
     // The island it belongs to.

@@ -1,3 +1,4 @@
+#pragma once
 // DISPLAYCONFIG_GET_ADVANCED_COLOR_INFO_2 (Windows 11's SDK), declared here
 // because the toolchain's headers only have it for a newer Windows than the
 // mod builds for. Its layout is the SDK's: the flags are bits (advanced

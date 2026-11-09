@@ -1,3 +1,4 @@
+#pragma once
 enum class Located { Found, NotAllowed, NotFound };
 
 // Where the computer is, from Windows' own location (asked to the user by

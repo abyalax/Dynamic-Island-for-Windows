@@ -1,3 +1,4 @@
+#pragma once
 class DrivesPanel : public Panel {
    public:
     // The drives now (from the island). An ejected one that's gone stays a

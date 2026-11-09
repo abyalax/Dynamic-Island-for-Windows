@@ -1,3 +1,4 @@
+#pragma once
 // Their cards in the settings: how tall (DIPs), and how many side by side
 // (two once each has room for its icon, name and switch).
 constexpr float kLyricsAppCard = 46;

@@ -1,3 +1,4 @@
+#pragma once
 constexpr WCHAR kGlyphKeyboardShortcuts = 0xE765;
 constexpr WCHAR kGlyphCopy = 0xE8C8;
 constexpr WCHAR kGlyphPencil = 0xE70F;

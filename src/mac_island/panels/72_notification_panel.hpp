@@ -1,3 +1,4 @@
+#pragma once
 ID2D1Bitmap* NotificationPanel::AppBitmap(ID2D1RenderTarget* target,
                                           const std::wstring& appId) {
     const double now = NowSeconds();

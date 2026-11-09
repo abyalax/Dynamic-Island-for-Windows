@@ -1,3 +1,4 @@
+#pragma once
 RECT Island::ReservedInsets() const {
     MONITORINFO info{sizeof(info)};
     if (!GetMonitorInfo(CurrentMonitor(), &info)) {

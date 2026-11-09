@@ -1,3 +1,4 @@
+#pragma once
 // Claude Code's limits as its status line got them last ("rate_limits";
 // only with a Pro or Max plan). False without the file, or while it's being
 // written.

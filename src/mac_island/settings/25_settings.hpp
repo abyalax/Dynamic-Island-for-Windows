@@ -1,3 +1,4 @@
+#pragma once
 // Where a language button's flag goes: at `left` (its text's start), in the
 // button's middle, on whole pixels so its edges stay sharp (at 150% a
 // button starts half a pixel in).

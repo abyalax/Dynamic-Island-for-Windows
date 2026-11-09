@@ -1,3 +1,4 @@
+#pragma once
 // The other apps' tray icons that aren't pinned, opened from the arrow when
 // they don't open sideways in the pill (see islandTrayStyle): a grid of
 // icons like Windows' own (the name of the one under the mouse at its

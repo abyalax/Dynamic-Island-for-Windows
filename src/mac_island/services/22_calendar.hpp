@@ -1,3 +1,4 @@
+#pragma once
 int DaysInMonth(int year, int month) {
     static const int kDays[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
     const bool leap = (year % 4 == 0 && year % 100 != 0) || year % 400 == 0;

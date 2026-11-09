@@ -1,3 +1,4 @@
+#pragma once
 std::wstring ProfileValueName(int id) {
     return L"profile" + std::to_wstring(id);
 }

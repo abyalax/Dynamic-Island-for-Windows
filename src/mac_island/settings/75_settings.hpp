@@ -1,3 +1,4 @@
+#pragma once
 // Changed in the island (its thread): kept, and shown right away.
 void SetIslandPref(IslandPref pref, int value) {
     // What every island shares is the main island's, also when changed on

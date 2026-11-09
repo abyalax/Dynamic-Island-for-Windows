@@ -1,3 +1,4 @@
+#pragma once
 int GetIslandPref(IslandPref pref) {
     switch (pref) {
         case IslandPref::Bar:

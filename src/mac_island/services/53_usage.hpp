@@ -1,3 +1,4 @@
+#pragma once
 // The AI usage item clicked (islandAiUsage): each agent turned on, its
 // session's and week's use as bars, with when each starts over; without its
 // limits, how to have them: for Claude Code, the line for the user's own

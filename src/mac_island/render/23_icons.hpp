@@ -1,3 +1,4 @@
+#pragma once
 // Every icon of the font the island draws (see IconFont), as the settings'
 // Icons page lists them: its name for a picture of one's own (a file in the
 // icon pack's folder, see g_iconFolder), its group on the page, its picture

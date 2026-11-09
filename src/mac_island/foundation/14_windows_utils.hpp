@@ -1,3 +1,4 @@
+#pragma once
 // Whether an island's process runs: its mutex exists while it does (one it
 // can't open exists too). In the island's own process once it released its
 // own (see WhTool_ModUninit): a new version's.

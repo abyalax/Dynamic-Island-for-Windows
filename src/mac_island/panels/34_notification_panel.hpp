@@ -1,3 +1,4 @@
+#pragma once
 class NotificationPanel : public Panel {
    public:
     // An app's notifications were seen (it came to the front): cleared here.

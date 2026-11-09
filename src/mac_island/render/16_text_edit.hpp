@@ -1,3 +1,4 @@
+#pragma once
 // A reply being typed: where the caret is in it, and how far it's scrolled
 // (it follows the caret, unless the wheel moved it), with its layout as last
 // shown (for the up and down arrows).

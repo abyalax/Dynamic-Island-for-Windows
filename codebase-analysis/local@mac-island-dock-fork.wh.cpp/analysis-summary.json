@@ -1,24 +1,24 @@
 {
-  "root": "C:\\Users\\abya\\c\\Dynamic-Island-for-Windows",
-  "output": "C:\\Users\\abya\\c\\Dynamic-Island-for-Windows\\codebase-analysis",
-  "generated_at": "2026-11-07T13:08:12+07:00",
+  "root": "/home/claude/Dynamic-Island-for-Windows",
+  "output": "/home/claude/Dynamic-Island-for-Windows/codebase-analysis",
+  "generated_at": "2026-11-08T22:49:02+00:00",
   "files_analyzed": 1,
-  "total_physical_lines": 109420,
-  "nonblank_lines": 106048,
+  "total_physical_lines": 114200,
+  "nonblank_lines": 110793,
   "source_files": 1,
-  "functions_detected_heuristically": 2893,
+  "functions_detected_heuristically": 2919,
   "windhawk_settings_detected": 172,
-  "variable_candidates": 0,
-  "windows_api_occurrences": 2698,
+  "variable_candidates": 12666,
+  "windows_api_occurrences": 2710,
   "includes": 96,
   "top_api_symbols": [
     [
       "ID2D1RenderTarget",
-      244
+      245
     ],
     [
       "ID2D1SolidColorBrush",
-      204
+      205
     ],
     [
       "IDWriteTextFormat",
@@ -26,7 +26,7 @@
     ],
     [
       "KillTimer",
-      108
+      110
     ],
     [
       "WaitForSingleObject",
@@ -42,7 +42,7 @@
     ],
     [
       "SetTimer",
-      75
+      76
     ],
     [
       "IDWriteTextLayout",
@@ -86,11 +86,11 @@
     ],
     [
       "GetCursorPos",
-      36
+      38
     ],
     [
       "ID2D1Factory",
-      31
+      33
     ],
     [
       "IInspectable",
@@ -113,11 +113,11 @@
       28
     ],
     [
-      "GetForegroundWindow",
+      "IUnknown",
       26
     ],
     [
-      "IUnknown",
+      "GetForegroundWindow",
       26
     ],
     [

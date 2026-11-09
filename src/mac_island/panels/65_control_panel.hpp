@@ -1,3 +1,4 @@
+#pragma once
 // A choice's longest name (with what's drawn before it: a color's dot, a
 // language's flag), in the settings' text.
 float ControlPanel::ChoiceWidest(int id) const {

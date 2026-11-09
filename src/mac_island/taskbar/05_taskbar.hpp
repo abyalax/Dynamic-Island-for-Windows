@@ -1,3 +1,4 @@
+#pragma once
 // The part of a taskbar it shows: on its own monitor, and before it moves to
 // `next`, on it both where it is and where it goes (cut after the move, a
 // frame would show it past the edge in between).

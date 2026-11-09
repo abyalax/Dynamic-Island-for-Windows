@@ -1,3 +1,4 @@
+#pragma once
 // What finds an entry: its names in both languages, a few words for what it
 // does, and its section's title.
 std::wstring ControlPanel::SettingText(const SettingEntry& entry) const {

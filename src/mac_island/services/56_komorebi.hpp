@@ -1,3 +1,4 @@
+#pragma once
 // A workspace of a monitor: its name ("" without one) and whether it has
 // windows.
 struct KomorebiWorkspace {

@@ -1,3 +1,4 @@
+#pragma once
 // A glass's shape, in its window's coordinates: a rounded rectangle, or a
 // notch (see NotchGeometry) when `shoulder` isn't negative.
 struct GlassShape {

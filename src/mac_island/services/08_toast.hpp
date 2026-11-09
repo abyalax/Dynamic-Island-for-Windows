@@ -1,3 +1,4 @@
+#pragma once
 // The toasts newer than `lastId` (or only the one with the ID `onlyId`):
 // the AppUserModelIDs of their apps, and the toasts themselves; moves
 // `lastId` past them. Web pictures are downloaded only with `pictures`.

@@ -1,3 +1,4 @@
+#pragma once
 // Folders and places on the island (an option): shortcuts the user pins
 // (folders, and Windows' places like This PC or the Recycle Bin), in a list
 // opened from the pill. A click on a folder shows what's in it in a column

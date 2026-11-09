@@ -1,3 +1,4 @@
+#pragma once
 class CalendarPanel : public Panel {
    protected:
     void Prepare(float scale) override;

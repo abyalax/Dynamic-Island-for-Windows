@@ -1,3 +1,4 @@
+#pragma once
 // Watched (by the main island) while its item is on: the input method's
 // windows showing and changing, the app in front (see OnForegroundChanged),
 // Windows' own indicator on the taskbar, whose name changes with the mode,

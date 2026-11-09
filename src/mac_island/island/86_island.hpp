@@ -1,3 +1,4 @@
+#pragma once
 // The pill filling like a loading bar (options): an app's progress on its
 // taskbar button (see PublishProgress; yellow paused, red for an error), or,
 // on a laptop, the battery's charge while it charges; in the chosen color

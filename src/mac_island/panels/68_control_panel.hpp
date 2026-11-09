@@ -1,3 +1,4 @@
+#pragma once
 // One control of the main view, at its place (sections at theirs).
 ID2D1Bitmap* ControlPanel::GetControlTile(ID2D1RenderTarget* target,
                                           ID2D1SolidColorBrush* brush,

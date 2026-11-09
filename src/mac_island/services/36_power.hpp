@@ -1,3 +1,4 @@
+#pragma once
 enum class PowerAction { Sleep, Restart, ShutDown, Lock, SignOut, Count };
 
 #ifndef EWX_HYBRID_SHUTDOWN

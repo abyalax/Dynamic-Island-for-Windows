@@ -1,3 +1,4 @@
+#pragma once
 // The bitmaps' size step for an icon drawn `wanted` pixels big.
 int IconPixels(float wanted) {
     for (int size : kIconPixelSizes) {

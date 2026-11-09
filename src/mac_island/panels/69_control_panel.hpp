@@ -1,3 +1,4 @@
+#pragma once
 void ControlPanel::DrawMixer(ID2D1RenderTarget* target,
                              ID2D1SolidColorBrush* brush) {
     DrawHeader(target, brush, Tr(L"Volume mixer", L"Mixer de volume"));

@@ -1,3 +1,4 @@
+#pragma once
 // Where a button is drawn this frame, in the taskbar's coordinates, for
 // UpdateDots.
 struct IconPlacement {

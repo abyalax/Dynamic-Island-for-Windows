@@ -1,3 +1,4 @@
+#pragma once
 // The shelf's item clicked: its files, each with its thumbnail (or its
 // type's icon), its name and its folder; one dragged out goes into the app
 // it's dropped on (copied or moved as chosen for the folders' panel, or as

@@ -1,3 +1,4 @@
+#pragma once
 void Island::ReleaseWindowsBanner() {
     m_stackTakeover = false;
     if (m_stackHidden) {

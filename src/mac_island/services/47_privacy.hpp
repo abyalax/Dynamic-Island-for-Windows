@@ -1,3 +1,4 @@
+#pragma once
 // Told by the audio service when a recording starts or stops, a session
 // comes, or a microphone is plugged in or out: the thread looks again.
 class PrivacyAudioEvents final : public IAudioSessionNotification,

@@ -1,3 +1,4 @@
+#pragma once
 // The keyboards installed (Windows' input languages), opened from the
 // keyboard language's item, like Windows' own indicator: each with its
 // language and its layout's name, the one in use checked. A click switches

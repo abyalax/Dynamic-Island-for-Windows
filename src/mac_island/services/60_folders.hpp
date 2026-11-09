@@ -1,3 +1,4 @@
+#pragma once
 ID2D1Bitmap* FoldersPanel::TypeIcon(ID2D1RenderTarget* target,
                                     const FolderEntry& item) {
     std::wstring type = L"\\";

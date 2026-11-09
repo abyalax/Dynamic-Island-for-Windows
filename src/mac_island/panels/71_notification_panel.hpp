@@ -1,3 +1,4 @@
+#pragma once
 std::vector<std::pair<std::wstring, int>> NotificationPanel::CountsInCenter() {
     std::vector<std::pair<std::wstring, int>> counts;
     bool whatsApp = false;

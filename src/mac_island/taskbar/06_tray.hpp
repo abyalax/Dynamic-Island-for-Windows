@@ -1,3 +1,4 @@
+#pragma once
 std::wstring TrayIconKey(const TrayIcon& icon) {
     std::wstring key;
     if (HANDLE process = OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, FALSE,

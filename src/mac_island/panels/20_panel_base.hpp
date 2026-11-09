@@ -1,3 +1,4 @@
+#pragma once
 // Returns true while it's still moving.
 bool Panel::Animate(double dt) {
     if (!m_hwnd) {

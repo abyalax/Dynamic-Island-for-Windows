@@ -1,3 +1,4 @@
+#pragma once
 // The last lines the island's process logged (with their time), kept for
 // the settings' Logs page whether Windhawk's logging is on or not (see
 // IslandLog). Only there (g_keepLog, set in WhTool_ModInit): explorer's

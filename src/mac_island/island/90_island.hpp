@@ -1,3 +1,4 @@
+#pragma once
 DWORD Island::DragOverAt(IDataObject* data,
                          POINT screen,
                          DWORD,

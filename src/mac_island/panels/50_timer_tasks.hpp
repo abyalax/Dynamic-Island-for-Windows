@@ -1,3 +1,4 @@
+#pragma once
 // The timer's panel (from its item), like the macOS Clock app: tabs for the
 // timer, the stopwatch, Pomodoro and the alarms (the lit one sliding, the
 // page coming in from its side); a countdown's length chosen on wheels

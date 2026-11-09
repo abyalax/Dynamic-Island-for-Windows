@@ -1,3 +1,4 @@
+#pragma once
 void ControlPanel::UpdateWifi(bool scan) {
     if (!m_wlan || !m_hasWifi || !m_hwnd) {
         m_networks.clear();

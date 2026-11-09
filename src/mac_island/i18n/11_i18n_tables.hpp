@@ -1,3 +1,4 @@
+#pragma once
 // The island's texts in Japanese, by their English ones (see Tr). Sorted by
 // the English text.
 // clang-format off

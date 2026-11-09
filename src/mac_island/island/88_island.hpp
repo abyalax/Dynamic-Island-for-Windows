@@ -1,3 +1,4 @@
+#pragma once
 // The island read a notification: its Windows banner goes (`take`) or
 // stays (see m_bannersOwed).
 void Island::OweWindowsBanner(bool take) {

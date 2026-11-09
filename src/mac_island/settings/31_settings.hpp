@@ -1,3 +1,4 @@
+#pragma once
 void ResetIslandSettings();
 
 std::wstring ChoiceOption(int id, int index) {

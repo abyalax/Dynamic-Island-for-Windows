@@ -1,3 +1,4 @@
+#pragma once
 // The island's sliders' values (0 size, 1 room from the edges, 2 animation
 // speed, 3 tray icons, 4 the backgrounds' opacity, 5 the auto-hide's delay,
 // 6 the notches' curves, 7 the icons' size, 8 the minimized line's

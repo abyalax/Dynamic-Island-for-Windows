@@ -1,3 +1,4 @@
+#pragma once
 constexpr size_t kThumbnailsKept = 240;
 
 struct ThumbnailMade {

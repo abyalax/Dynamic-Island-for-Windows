@@ -1,3 +1,4 @@
+#pragma once
 void ControlPanel::UpdateApps() {
     ReadMixerApps(m_apps, kMaxMixerApps);
 }

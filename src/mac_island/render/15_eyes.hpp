@@ -1,3 +1,4 @@
+#pragma once
 // The dragon's eyes (islandEyes): two eyes on the pill that follow the mouse
 // when it's near, blink, glance around on their own and get excited with a
 // new notification. They're drawn in the units of a 50 x 50 box (the design's,

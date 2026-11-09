@@ -1,3 +1,4 @@
+#pragma once
 // The Windows updates waiting (their titles), or false when Windows Update
 // couldn't be asked. Offline: what Windows' own last scan found, without
 // contacting a server.

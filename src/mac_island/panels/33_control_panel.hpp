@@ -1,3 +1,4 @@
+#pragma once
 class ControlPanel : public Panel {
    public:
     ~ControlPanel() {

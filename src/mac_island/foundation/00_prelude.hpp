@@ -1,3 +1,4 @@
+#pragma once
 #include <windhawk_utils.h>
 
 #include <appmodel.h>

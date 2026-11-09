@@ -1,3 +1,4 @@
+#pragma once
 // Takes the latest new notification and shows it: in the pill, or peeking out
 // of the line when minimized. Not with "Do not disturb", in the bar, or over
 // an open panel.

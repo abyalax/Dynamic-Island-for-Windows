@@ -1,3 +1,4 @@
+#pragma once
 // Muted or not, as the default one is: every microphone plugged in (an app
 // may record from another one than the default, like a webcam's while a
 // headset is the default). Some apps record a muted microphone anyway (they

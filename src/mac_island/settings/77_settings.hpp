@@ -1,3 +1,4 @@
+#pragma once
 // An option's value put in memory only (not kept, nothing else done), for a
 // monitor's look. The ones for all the islands at once (where they are,
 // the animations, who handles the notifications) aren't a monitor's.

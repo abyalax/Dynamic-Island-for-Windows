@@ -1,3 +1,4 @@
+#pragma once
 // The wallpaper switcher (an option): the pictures of a folder the user
 // picks, as thumbnails (Windows' own, from its thumbnail cache) in a list
 // opened from the pill. One chosen comes in with a transition, drawn by a

@@ -14,3 +14,7 @@ desktop-live-overlay.wh.cpp
 /.clangd
 *.patch
 
+# WHAM tooling and local build artifacts
+/.tools/
+/build/
+__pycache__/

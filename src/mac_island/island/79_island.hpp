@@ -1,3 +1,4 @@
+#pragma once
 void Island::ReadWindowColor() {
     bool wanted = false;
     ForEachIsland(

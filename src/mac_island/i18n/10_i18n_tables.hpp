@@ -1,3 +1,4 @@
+#pragma once
 // The island's texts in Chinese (Simplified), by their English ones (see
 // Tr). Sorted by the English text.
 // clang-format off

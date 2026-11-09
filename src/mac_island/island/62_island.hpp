@@ -1,3 +1,4 @@
+#pragma once
 class Island final : public DropTarget::Receiver {
    public:
     bool Create();

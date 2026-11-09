@@ -1,3 +1,4 @@
+#pragma once
 // Editing a profile: its name typed in the box (`fresh`: a new one, whose
 // name starts selected, so typing replaces it).
 void ControlPanel::StartProfileEdit(int id, bool fresh) {

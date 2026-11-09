@@ -1,3 +1,4 @@
+#pragma once
 // The taskbar shows what's behind it where the mod took its background away:
 // the dock (its room and beside its shelf) and the transparent Windows
 // taskbar.

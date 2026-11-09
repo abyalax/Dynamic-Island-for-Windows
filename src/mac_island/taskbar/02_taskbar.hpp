@@ -1,3 +1,4 @@
+#pragma once
 // Every property the mod sets, with the value it had before, so that it can
 // be put back.
 struct StyledProperty {

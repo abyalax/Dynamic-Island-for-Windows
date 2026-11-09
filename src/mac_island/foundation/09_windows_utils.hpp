@@ -1,3 +1,4 @@
+#pragma once
 // The windows the kind was worked out for, and it (see PublishProgress).
 std::vector<HWND> g_progressKindWindows;
 int g_progressKind = 0;

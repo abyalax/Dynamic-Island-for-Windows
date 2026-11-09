@@ -1,3 +1,4 @@
+#pragma once
 // What each published version brought (the settings' "What's new", newest
 // first): a short summary for users, in each of the island's languages, in
 // TextLanguage's order. A line starting with "#" is a heading, the others

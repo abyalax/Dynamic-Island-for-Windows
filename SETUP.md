@@ -2,6 +2,8 @@
 
 This section describes how to set up the local development environment, compile the Dynamic Island for Windows Windhawk mod, and test it on a local Windows machine without relying on the Windhawk VS Code extension.
 
+**Modular mods:** `mac-island` is now split into modules under `src/mac_island/` and bundled into one `.wh.cpp` by WHAM. For its setup, build, install and analysis commands use [`docs/WHAM-WORKFLOW.md`](docs/WHAM-WORKFLOW.md) (`python tools/mods.py all`). The manual steps below still apply to a single-file mod, but build a **modular** mod from `output/`, take the link libraries from the mod's `@compilerOptions` (or use `python tools/mods.py build`), and keep DLL output out of `output/` (use `build/`), because WHAM generates the one-file mods there.
+
 ### Prerequisites
 
 - Windows 10 or Windows 11, 64-bit.

@@ -1,3 +1,4 @@
+#pragma once
 // komorebi's process in this session, or 0 if it doesn't run.
 DWORD KomorebiProcessId() {
     return SessionProcessId(L"komorebi.exe");

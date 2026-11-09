@@ -1,3 +1,4 @@
+#pragma once
 DWORD WINAPI PickCommandThreadProc(LPVOID parameter) {
     const HWND panel = (HWND)parameter;
     const HRESULT com = CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);

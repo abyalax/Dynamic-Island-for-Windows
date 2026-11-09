@@ -1,3 +1,4 @@
+#pragma once
 LRESULT Panel::HandleMessage(HWND hWnd, UINT msg, WPARAM wParam,
                              LPARAM lParam) {
     // (A window of its own: Windows' caption buttons, over its title bar.)

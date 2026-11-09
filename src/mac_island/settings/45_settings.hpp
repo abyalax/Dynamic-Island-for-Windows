@@ -1,3 +1,4 @@
+#pragma once
 void LoadSettings();
 // How often updates are looked for (updatesCheckEvery, chosen in their
 // panel, for every island: they're looked for once for all): every 1, 3, 6,

@@ -1,3 +1,4 @@
+#pragma once
 // Picks a file (on a thread of its own: the dialog waits there) and reads
 // its shortcuts.
 DWORD WINAPI ImportShortcutsThreadProc(LPVOID parameter) {

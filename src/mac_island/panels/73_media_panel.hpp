@@ -1,3 +1,4 @@
+#pragma once
 // A text too long for its place scrolls to its end and back while the
 // mouse is over it (see MarqueeShift; otherwise its start shows); one that
 // fits, or without animations, is drawn as it is.
